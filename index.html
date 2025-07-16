@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>Kidos Tools - Entwickler-Utilities</title>
+  <title>Kidos Tools - Erziehers little helper</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="css/main.css" />
   <script src="js/header-loader.js"></script>
@@ -14,14 +14,15 @@
 
     <!-- Main Content -->
     <main class="main-content" id="main-content" style="display: none;">
-      <h1 class="page-title">Kidos Tools</h1>
-      <p class="page-description">
-        Professionelle Entwickler-Tools für die Kidos-Plattform. 
-        Hier findest du Utilities, Generatoren und Hilfsprogramme für die Entwicklung.
-      </p>
+      <div class="content-wrapper">
+        <h1 class="page-title">Kidos Tools</h1>
+        <p class="page-description">
+          Professionelle Tools für die Kidos-Plattform. 
+          Hier findest du Utilities, Generatoren und Hilfsprogramme für Erzieher*innen.
+        </p>
 
-      <!-- Tools Grid -->
-      <div class="tools-grid">
+        <!-- Tools Grid -->
+        <div class="tools-grid">
         
         <!-- Tool 1: Entwicklungsbericht -->
         <div class="tool-card" onclick="openTool('entwicklungsbericht')">
@@ -45,6 +46,51 @@
           <span class="tool-status status-ready">Bereit</span>
         </div>
 
+        <!-- Test-Karten für Scroll-Test -->
+        <div class="tool-card">
+          <div class="tool-icon">🔧</div>
+          <h3 class="tool-title">Test Tool 1</h3>
+          <p class="tool-description">
+            Dies ist ein Test-Tool, um zu sehen, ob der Scroll-Bereich funktioniert.
+          </p>
+          <span class="tool-status status-planned">Geplant</span>
+        </div>
+
+        <div class="tool-card">
+          <div class="tool-icon">⚙️</div>
+          <h3 class="tool-title">Test Tool 2</h3>
+          <p class="tool-description">
+            Noch ein Test-Tool für den Scroll-Test.
+          </p>
+          <span class="tool-status status-planned">Geplant</span>
+        </div>
+
+        <div class="tool-card">
+          <div class="tool-icon">🛠️</div>
+          <h3 class="tool-title">Test Tool 3</h3>
+          <p class="tool-description">
+            Drittes Test-Tool für den Scroll-Test.
+          </p>
+          <span class="tool-status status-planned">Geplant</span>
+        </div>
+
+        <div class="tool-card">
+          <div class="tool-icon">🔨</div>
+          <h3 class="tool-title">Test Tool 4</h3>
+          <p class="tool-description">
+            Viertes Test-Tool für den Scroll-Test.
+          </p>
+          <span class="tool-status status-planned">Geplant</span>
+        </div>
+
+      </div>
+      
+      <div style="margin-top: 2rem; padding: 1rem; background: var(--bg-dark-2); border-radius: 8px;">
+        <h3>Scroll-Test Bereich</h3>
+        <p>Dieser Bereich ist da, um zu testen, ob der Scroll-Bereich zwischen Header und Footer funktioniert.</p>
+        <p>Wenn du diesen Text siehst und nach unten scrollen kannst, funktioniert das fixe Layout korrekt.</p>
+        <p>Der Header und Footer sollten dabei immer sichtbar bleiben.</p>
+      </div>
       </div>
     </main>
 
