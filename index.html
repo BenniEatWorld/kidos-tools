@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Kidos Tools - Entwickler-Utilities</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/main.css" />
+  <script src="js/header-loader.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header Container -->
+    <div id="header-container"></div>
+
+    <!-- Main Content -->
+    <main class="main-content" id="main-content" style="display: none;">
+      <h1 class="page-title">Kidos Tools</h1>
+      <p class="page-description">
+        Professionelle Entwickler-Tools für die Kidos-Plattform. 
+        Hier findest du Utilities, Generatoren und Hilfsprogramme für die Entwicklung.
+      </p>
+
+      <!-- Tools Grid -->
+      <div class="tools-grid">
+        
+        <!-- Tool 1: Entwicklungsbericht -->
+        <div class="tool-card" onclick="openTool('entwicklungsbericht')">
+          <div class="tool-icon">�</div>
+          <h3 class="tool-title">Entwicklungsbericht</h3>
+          <p class="tool-description">
+            Umfassender Entwicklungsbericht für Kinder in der Kita. 
+            Dokumentiert Fortschritte in allen Entwicklungsbereichen.
+          </p>
+          <span class="tool-status status-ready">Bereit</span>
+        </div>
+
+        <!-- Tool 2: Entwicklungseinschätzung -->
+        <div class="tool-card" onclick="openTool('entwicklungseinschaetzung')">
+          <div class="tool-icon">📊</div>
+          <h3 class="tool-title">Entwicklungseinschätzung</h3>
+          <p class="tool-description">
+            Spezialisierte Einschätzung für soziales, emotionales Verhalten 
+            und ADHS/ADS/ASS-Screening.
+          </p>
+          <span class="tool-status status-ready">Bereit</span>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="login-modal-bg">
+      <div class="login-modal-box">
+        <h2 class="login-modal-title">Kidos Tools Login</h2>
+        <p class="login-modal-text">Bitte gib das Passwort ein, um die Tools zu nutzen.</p>
+        <input id="pw-input" type="password" placeholder="Passwort" autocomplete="current-password" onkeydown="if(event.key==='Enter'){checkPassword();}" />
+        <div id="pw-error" class="login-error"></div>
+        <button onclick="checkPassword()" class="login-submit-btn">Login</button>
+      </div>
+    </div>
+
+    <!-- Footer Container -->
+    <div id="footer-container"></div>
+  </div>
+
+  <script>
+    // Login-Funktionalität
+    let isLoggedIn = false;
+    const correctPasswordHash = 'a87dc46c10998d49038499595ea919acf69a290eba2fa756d4e9fcb0ea10e257'; // "hello" in SHA256
+
+    function checkPassword() {
+      const input = document.getElementById('pw-input');
+      const error = document.getElementById('pw-error');
+      
+      if (!input || !error) return;
+      
+      const password = input.value.trim();
+      
+      if (!password) {
+        error.textContent = 'Bitte geben Sie ein Passwort ein.';
+        return;
+      }
+      
+      // SHA256 Hash des eingegebenen Passworts
+      crypto.subtle.digest('SHA-256', new TextEncoder().encode(password))
+        .then(hashBuffer => {
+          const hashArray = Array.from(new Uint8Array(hashBuffer));
+          const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+          
+          if (hashHex === correctPasswordHash) {
+            error.textContent = '';
+            isLoggedIn = true;
+            document.getElementById('login-modal').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            input.value = '';
+          } else {
+            error.textContent = 'Falsches Passwort.';
+            input.focus();
+          }
+        });
+    }
+
+    // Tool-Navigation (nur wenn eingeloggt)
+    function openTool(toolId) {
+      if (!isLoggedIn) {
+        alert('Bitte loggen Sie sich zuerst ein.');
+        return;
+      }
+      
+      console.log('Opening tool:', toolId);
+      
+      // Sichere Navigation zu Tools
+      const toolUrls = {
+        'entwicklungsbericht': 'tools/entwicklungsbericht.html',
+        'entwicklungseinschaetzung': 'tools/entwicklungseinschaetzung.html'
+      };
+      
+      if (toolUrls[toolId]) {
+        // Sichere Weiterleitung mit Login-Token
+        const loginToken = btoa(Date.now().toString());
+        sessionStorage.setItem('kidos_login_token', loginToken);
+        window.location.href = toolUrls[toolId] + '?token=' + loginToken;
+      } else {
+        alert('Tool nicht gefunden.');
+      }
+    }
+
+    // Initialisierung
+    document.addEventListener('DOMContentLoaded', function() {
+      // Fokus auf Passwort-Eingabe
+      const input = document.getElementById('pw-input');
+      if (input) input.focus();
+    });
+
+    console.log('Kidos Tools initialized with login protection');
+  </script>
+</body>
+</html>

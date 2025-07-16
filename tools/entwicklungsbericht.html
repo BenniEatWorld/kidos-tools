@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Entwicklungsbericht - Kidos Tools</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../css/main.css" />
+  <script src="../js/header-loader.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header Container -->
+    <div id="header-container"></div>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content" id="main-content" style="display: none;">
+      <h1 class="page-title">Entwicklungsbericht</h1>
+      <p class="page-description">
+        Umfassender Entwicklungsbericht für Kinder in der Kita. 
+        Dokumentiert Fortschritte in allen Entwicklungsbereichen.
+      </p>
+      
+      <!-- Tool Content -->
+      <div class="tool-content">
+        <iframe src="../../kidos2025/eb.html" 
+                width="100%" 
+                height="800" 
+                frameborder="0"
+                title="Entwicklungsbericht">
+        </iframe>
+      </div>
+    </main>
+
+    <!-- Access Denied -->
+    <div id="access-denied" class="login-modal-bg">
+      <div class="login-modal-box">
+        <h2 class="login-modal-title">Zugriff verweigert</h2>
+        <p class="login-modal-text">Sie müssen sich über die Hauptseite anmelden, um auf diese Seite zugreifen zu können.</p>
+        <button onclick="window.location.href='../index.html'" class="login-submit-btn">Zur Anmeldung</button>
+      </div>
+    </div>
+
+    <!-- Footer Container -->
+    <div id="footer-container"></div>
+  </div>
+
+  <script>
+    // Sichere Authentifizierung
+    function checkAuth() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get('token');
+      const storedToken = sessionStorage.getItem('kidos_login_token');
+      
+      if (token && storedToken && token === storedToken) {
+        // Gültiger Token
+        document.getElementById('access-denied').style.display = 'none';
+        document.getElementById('main-content').style.display = 'block';
+      } else {
+        // Ungültiger oder fehlender Token
+        document.getElementById('access-denied').style.display = 'flex';
+        document.getElementById('main-content').style.display = 'none';
+      }
+    }
+
+    function logout() {
+      sessionStorage.removeItem('kidos_login_token');
+      window.location.href = '../index.html';
+    }
+
+    // Initialisierung
+    document.addEventListener('DOMContentLoaded', function() {
+      checkAuth();
+    });
+  </script>
+</body>
+</html>
