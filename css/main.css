@@ -254,6 +254,18 @@ html, body {
   position: relative;
 }
 
+.login-modal-logo {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.modal-logo-image {
+  height: 80px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
 .login-modal-title {
   color: var(--accent-2);
   text-align: center;
@@ -304,6 +316,25 @@ html, body {
 
 .login-submit-btn:hover {
   background: var(--accent-1);
+}
+
+.login-modal-footer {
+  text-align: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.login-modal-link {
+  color: var(--accent-2);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.2s;
+}
+
+.login-modal-link:hover {
+  color: var(--accent-1);
+  text-decoration: underline;
 }
 
 /* Responsive */

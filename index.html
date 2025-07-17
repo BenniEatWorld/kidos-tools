@@ -97,11 +97,17 @@
     <!-- Login Modal -->
     <div id="login-modal" class="login-modal-bg">
       <div class="login-modal-box">
+        <div class="login-modal-logo">
+          <img src="gfx/Kidos-logo.png" alt="Kidos Logo" class="modal-logo-image" />
+        </div>
         <h2 class="login-modal-title">Kidos Tools Login</h2>
         <p class="login-modal-text">Bitte gib das Passwort ein, um die Tools zu nutzen.</p>
         <input id="pw-input" type="password" placeholder="Passwort" autocomplete="current-password" onkeydown="if(event.key==='Enter'){checkPassword();}" />
         <div id="pw-error" class="login-error"></div>
         <button onclick="checkPassword()" class="login-submit-btn">Login</button>
+        <div class="login-modal-footer">
+          <a href="https://www.benjamingeisler.de/kontakt/mitglied-kidos-tools/" target="_blank" rel="noopener noreferrer" class="login-modal-link">Mitglied werden</a>
+        </div>
       </div>
     </div>
 
