@@ -5,6 +5,7 @@
   <title>Entwicklungsbericht - Kidos Tools</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/tools-forms.css" />
   <script src="../js/header-loader.js"></script>
 </head>
 <body>
@@ -24,14 +25,47 @@
           Dokumentiert Fortschritte in allen Entwicklungsbereichen.
         </p>
         
-        <!-- Tool Content -->
-        <div class="tool-content">
-        <iframe src="../../kidos2025/eb.html" 
-                width="100%" 
-                height="800" 
-                frameborder="0"
-                title="Entwicklungsbericht">
-        </iframe>
+        <!-- Eingabefelder -->
+        <div class="form-section">
+          <h2 class="form-title">Grunddaten</h2>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="child-name" class="form-label">Name des Kindes:</label>
+              <input type="text" id="child-name" class="form-input" placeholder="Pseudonym" />
+            </div>
+            
+            <div class="form-group">
+              <label for="child-age" class="form-label">Alter:</label>
+              <input type="text" id="child-age" class="form-input" placeholder="z.B. 4 Jahre, 6 Monate" />
+            </div>
+            
+            <div class="form-group">
+              <label for="author" class="form-label">Autor*in:</label>
+              <input type="text" id="author" class="form-input" placeholder="Name der Erzieher*in" />
+            </div>
+            
+            <div class="form-group">
+              <label for="assessment-date" class="form-label">Erhebungsdatum:</label>
+              <input type="date" id="assessment-date" class="form-input" />
+            </div>
+          </div>
+        </div>
+        
+        <!-- Bewertungstabelle -->
+        <div class="assessment-section">
+          <h2 class="form-title">Entwicklungsbewertung</h2>
+          <div id="assessment-table" class="assessment-table">
+            <!-- Hier wird die Tabelle dynamisch geladen -->
+          </div>
+        </div>
+        
+        <!-- Export-Container -->
+        <div class="export-section">
+          <h2 class="form-title">Export</h2>
+          <div class="export-actions">
+            <button onclick="exportToCSV()" class="tool-button">CSV-Export</button>
+            <p class="export-description">Exportiert alle eingegebenen Daten und Bewertungen als CSV-Datei.</p>
+          </div>
         </div>
       </div>
     </main>
@@ -50,6 +84,27 @@
 
     <!-- Footer Container -->
     <div id="footer-container"></div>
+  </div>
+
+  <!-- Export Confirmation Modal -->
+  <div id="export-modal" class="login-modal-bg" style="display: none;">
+    <div class="login-modal-box">
+      <div class="login-modal-logo">
+        <img src="../gfx/Kidos-logo.png" alt="Kidos Logo" class="modal-logo-image" />
+      </div>
+      <h2 class="login-modal-title">CSV-Export bestätigen</h2>
+      <p class="login-modal-text">Möchtest du alle eingegebenen Daten und Bewertungen als CSV-Datei exportieren?</p>
+      <div class="export-modal-info">
+        <p><strong>Name:</strong> <span id="export-child-name">-</span></p>
+        <p><strong>Alter:</strong> <span id="export-child-age">-</span></p>
+        <p><strong>Autor*in:</strong> <span id="export-author">-</span></p>
+        <p><strong>Erhebungsdatum:</strong> <span id="export-date">-</span></p>
+      </div>
+      <div class="export-modal-buttons">
+        <button onclick="cancelExport()" class="export-cancel-btn">Abbrechen</button>
+        <button onclick="confirmExport()" class="export-confirm-btn">Exportieren</button>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -75,9 +130,223 @@
       window.location.href = '../index.html';
     }
 
+    // Bewertungstabelle laden
+    async function loadAssessmentTable() {
+      try {
+        const response = await fetch('../data/EB_STD.json');
+        const data = await response.json();
+        
+        const tableContainer = document.getElementById('assessment-table');
+        let html = '';
+        
+        data.kategorien.forEach(kategorie => {
+          // Große Überschrift für die Kategorie
+          html += `<div class="category-header">${kategorie.name}</div>`;
+          
+          kategorie.unterkategorien.forEach(unterkategorie => {
+            // Unterüberschrift
+            html += `<div class="subcategory-header">${unterkategorie.name}</div>`;
+            
+            // Aussagen mit Radio-Buttons
+            unterkategorie.aussagen.forEach((aussage, index) => {
+              const radioName = `rating_${kategorie.name}_${unterkategorie.name}_${index}`.replace(/[^a-zA-Z0-9]/g, '_');
+              
+              html += `
+                <div class="assessment-row">
+                  <div class="assessment-content">
+                    <div class="assessment-statement">${aussage}</div>
+                    <div class="assessment-ratings">
+                      <div class="rating-colors">
+                        <label class="rating-color gray" for="${radioName}_0">
+                          <input type="radio" name="${radioName}" value="0" id="${radioName}_0">
+                          <span class="rating-indicator"></span>
+                        </label>
+                        <label class="rating-color dark-red" for="${radioName}_1">
+                          <input type="radio" name="${radioName}" value="1" id="${radioName}_1">
+                          <span class="rating-indicator"></span>
+                        </label>
+                        <label class="rating-color red" for="${radioName}_2">
+                          <input type="radio" name="${radioName}" value="2" id="${radioName}_2">
+                          <span class="rating-indicator"></span>
+                        </label>
+                        <label class="rating-color yellow" for="${radioName}_3">
+                          <input type="radio" name="${radioName}" value="3" id="${radioName}_3">
+                          <span class="rating-indicator"></span>
+                        </label>
+                        <label class="rating-color light-green" for="${radioName}_4">
+                          <input type="radio" name="${radioName}" value="4" id="${radioName}_4">
+                          <span class="rating-indicator"></span>
+                        </label>
+                        <label class="rating-color green" for="${radioName}_5">
+                          <input type="radio" name="${radioName}" value="5" id="${radioName}_5">
+                          <span class="rating-indicator"></span>
+                        </label>
+                      </div>
+                      <div class="rating-legend">
+                        <span class="legend-item">Nicht<br>bewertbar</span>
+                        <span class="legend-item">Trifft nicht<br>zu</span>
+                        <span class="legend-item">Trifft weniger<br>zu</span>
+                        <span class="legend-item">Trifft<br>zu</span>
+                        <span class="legend-item">Trifft eher<br>zu</span>
+                        <span class="legend-item">Trifft absolut<br>zu</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `;
+            });
+          });
+        });
+        
+        tableContainer.innerHTML = html;
+      } catch (error) {
+        console.error('Fehler beim Laden der Bewertungstabelle:', error);
+        document.getElementById('assessment-table').innerHTML = '<p>Fehler beim Laden der Bewertungsdaten.</p>';
+      }
+    }
+
+    // CSV-Export-Funktionalität
+    function exportToCSV() {
+      // Grunddaten sammeln und Modal füllen
+      const childName = document.getElementById('child-name').value.trim() || 'unbekannt';
+      const childAge = document.getElementById('child-age').value.trim() || 'nicht angegeben';
+      const author = document.getElementById('author').value.trim() || 'unbekannt';
+      const assessmentDate = document.getElementById('assessment-date').value || 'nicht angegeben';
+      
+      // Modal mit Daten füllen
+      document.getElementById('export-child-name').textContent = childName;
+      document.getElementById('export-child-age').textContent = childAge;
+      document.getElementById('export-author').textContent = author;
+      document.getElementById('export-date').textContent = assessmentDate;
+      
+      // Modal anzeigen
+      document.getElementById('export-modal').style.display = 'flex';
+    }
+    
+    function cancelExport() {
+      document.getElementById('export-modal').style.display = 'none';
+    }
+    
+    function confirmExport() {
+      // Modal schließen
+      document.getElementById('export-modal').style.display = 'none';
+      
+      // Grunddaten sammeln
+      const childName = document.getElementById('child-name').value.trim() || 'unbekannt';
+      const childAge = document.getElementById('child-age').value.trim() || '';
+      const author = document.getElementById('author').value.trim() || '';
+      const assessmentDate = document.getElementById('assessment-date').value || '';
+      
+      // Aktueller Zeitstempel für Dateiname
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      const hour = String(now.getHours()).padStart(2, '0');
+      const minute = String(now.getMinutes()).padStart(2, '0');
+      const second = String(now.getSeconds()).padStart(2, '0');
+      
+      const timestamp = `${year}${month}${day}${hour}${minute}${second}`;
+      const filename = `${timestamp} - ${childName}.csv`;
+      
+      // CSV-Inhalt erstellen mit UTF-8 BOM für korrekte Umlaut-Darstellung
+      let csvContent = '\uFEFF'; // UTF-8 BOM
+      
+      // Grunddaten hinzufügen
+      csvContent += 'GRUNDDATEN\n';
+      csvContent += `Name des Kindes;${childName}\n`;
+      csvContent += `Alter;${childAge}\n`;
+      csvContent += `Autor*in;${author}\n`;
+      csvContent += `Erhebungsdatum;${assessmentDate}\n`;
+      csvContent += '\n';
+      
+      // Bewertungen nach Kategorien strukturiert sammeln
+      const bewertungsTexte = {
+        '0': 'Nicht bewertbar',
+        '1': 'Trifft nicht zu',
+        '2': 'Trifft weniger zu',
+        '3': 'Trifft zu',
+        '4': 'Trifft eher zu',
+        '5': 'Trifft absolut zu'
+      };
+      
+      // Alle Kategorien und Unterkategorien durchgehen
+      const categoryHeaders = document.querySelectorAll('.category-header');
+      
+      categoryHeaders.forEach(categoryHeader => {
+        const kategorieName = categoryHeader.textContent.trim();
+        csvContent += `${kategorieName.toUpperCase()}\n`;
+        
+        // Alle Unterkategorien dieser Kategorie finden
+        let currentElement = categoryHeader.nextElementSibling;
+        
+        while (currentElement && !currentElement.classList.contains('category-header')) {
+          if (currentElement.classList.contains('subcategory-header')) {
+            const unterkategorieName = currentElement.textContent.trim();
+            csvContent += `${unterkategorieName}\n`;
+            
+            // Alle Aussagen dieser Unterkategorie durchgehen
+            let assessmentElement = currentElement.nextElementSibling;
+            
+            while (assessmentElement && 
+                   !assessmentElement.classList.contains('subcategory-header') && 
+                   !assessmentElement.classList.contains('category-header')) {
+              
+              if (assessmentElement.classList.contains('assessment-row')) {
+                const statement = assessmentElement.querySelector('.assessment-statement').textContent.trim();
+                
+                // Finde die ausgewählte Bewertung für diese Aussage
+                const checkedRadio = assessmentElement.querySelector('input[type="radio"]:checked');
+                const bewertung = checkedRadio ? bewertungsTexte[checkedRadio.value] : 'Nicht bewertet';
+                
+                // Aussage und Bewertung hinzufügen
+                csvContent += `"${statement}";"${bewertung}"\n`;
+              }
+              
+              assessmentElement = assessmentElement.nextElementSibling;
+            }
+            
+            csvContent += '\n'; // Leerzeile nach jeder Unterkategorie
+          }
+          
+          currentElement = currentElement.nextElementSibling;
+        }
+        
+        csvContent += '\n'; // Leerzeile nach jeder Kategorie
+      });
+      
+      // Fußzeile hinzufügen
+      const currentDate = new Date();
+      const formattedDate = `${String(currentDate.getDate()).padStart(2, '0')}.${String(currentDate.getMonth() + 1).padStart(2, '0')}.${currentDate.getFullYear()}`;
+      const authorName = author || 'unbekannt';
+      
+      csvContent += `Diese Datei wurde am ${formattedDate} von ${authorName} mit Kidos erstellt. © 2025 Benjamin Geisler – Kidos Tools.\n`;
+      
+      // CSV-Datei erstellen und herunterladen mit korrekter UTF-8 Kodierung
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', filename);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        
+        console.log('CSV-Datei wurde erstellt:', filename);
+      } else {
+        console.error('CSV-Export wird von diesem Browser nicht unterstützt.');
+        alert('CSV-Export wird von diesem Browser nicht unterstützt.');
+      }
+    }
+
     // Initialisierung
     document.addEventListener('DOMContentLoaded', function() {
       checkAuth();
+      loadAssessmentTable();
     });
   </script>
 </body>

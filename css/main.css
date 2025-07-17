@@ -336,33 +336,3 @@ html, body {
   color: var(--accent-1);
   text-decoration: underline;
 }
-
-/* Responsive */
-@media (max-width: 768px) {
-  .header {
-    height: 70px; /* Höherer Header auf mobilen Geräten */
-    padding: 0.5rem 1rem; /* Weniger Padding auf mobilen Geräten */
-  }
-
-  .header-content {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .nav-links {
-    gap: 1rem;
-  }
-
-  .main-content {
-    padding: 1rem;
-    top: 70px; /* Angepasst an höheren mobilen Header */
-  }
-
-  .page-title {
-    font-size: 2rem;
-  }
-
-  .tools-grid {
-    grid-template-columns: 1fr;
-  }
-}
