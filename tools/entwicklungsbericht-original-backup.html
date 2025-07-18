@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Entwicklungsbericht - Kidos Tools</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/tools-forms.css" />
+  <style>
+    /* Sicherstellen, dass der Kalender-Pfeil für date-inputs sichtbar ist */
+    input[type="date"] {
+      position: relative;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23666'%3e%3cpath fill-rule='evenodd' d='M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z' clip-rule='evenodd'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px 16px;
+      padding-right: 40px !important;
+    }
+    
+    /* Webkit-spezifische Styles für bessere Browserkompatibilität */
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      opacity: 1;
+      cursor: pointer;
+      background: transparent;
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    
+    /* Für Firefox */
+    input[type="date"]::-moz-calendar-picker {
+      opacity: 1;
+    }
+  </style>
+  <script src="../js/lib/jspdf.min.js"></script>
+  <script src="../js/lib/docx.min.js"></script>
+  <script src="../js/header-loader.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header Container -->
+    <div id="header-container"></div>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content" id="main-content" style="display: none;">
+      <div class="content-wrapper">
+        <h1 class="page-title">Entwicklungsbericht</h1>
+        <p class="page-description" style="text-align: justify;">
+          Mit der Bewertung der Entwicklungsaussagen kannst du am Ende eine Datei ausgeben:
+          CSV, PDF oder DOCX. Diese wird in deinem Download-Ordner gespeichert. Du kannst
+          anschließend deine K.I. (von deiner Arbeitgeber*in lizenzierten K.I.) mit der Datei
+          füttern. Meistens einfach per drag & drop in das Chatfenster. Dann musst du nur noch
+          einen Prompt schreiben. Ein Promptvorschlag steht unten nach den Exportmöglichkeiten.
+        </p>
+        
+        <!-- Eingabefelder -->
+        <div class="form-section">
+          <h2 class="form-title">Grunddaten</h2>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="child-name" class="form-label">Name des Kindes:</label>
+              <input type="text" id="child-name" class="form-input" placeholder="Pseudonym" />
+            </div>
+            
+            <div class="form-group">
+              <label for="child-age" class="form-label">Alter:</label>
+              <input type="text" id="child-age" class="form-input" placeholder="z.B. 4 Jahre, 6 Monate" />
+            </div>
+            
+            <div class="form-group">
+              <label for="author" class="form-label">Autor*in:</label>
+              <input type="text" id="author" class="form-input" placeholder="Name der Erzieher*in" />
+            </div>
+            
+            <div class="form-group">
+              <label for="assessment-date" class="form-label">Erhebungsdatum:</label>
+              <input type="date" id="assessment-date" class="form-input" />
+            </div>
+          </div>
+        </div>
+        
+        <!-- Bewertungstabelle -->
+        <div class="assessment-section">
+          <h2 class="form-title">Entwicklungsbewertung</h2>
+          <div id="assessment-table" class="assessment-table">
+            <!-- Hier wird die Tabelle dynamisch geladen -->
+          </div>
+        </div>
+        
+        <!-- Export-Container -->
+        <div class="export-section">
+          <h2 class="form-title">Export</h2>
+          <div class="export-actions">
+            <div class="export-buttons">
+              <button onclick="exportToCSV()" class="tool-button">CSV-Export</button>
+              <button onclick="exportToPDF()" class="tool-button">PDF-Export</button>
+              <button onclick="exportToWord()" class="tool-button">Word-Export</button>
+            </div>
+            <p class="export-description">Exportiert alle eingegebenen Daten und Bewertungen als CSV-, PDF- oder Word-Datei.</p>
+          </div>
+        </div>
+
+        <!-- KI-Prompt Hinweis -->
+        <div class="form-section" style="margin-top: 30px;">
+          <h2 class="form-title">KI-Prompt für Entwicklungsbericht</h2>
+          <div class="prompt-container" style="background-color: #2c3e50; border: 1px solid #34495e; border-radius: 8px; padding: 20px; margin-top: 15px; color: #ecf0f1;">
+            <p style="margin-bottom: 15px; font-weight: bold; color: #bdc3c7;">
+              Verwenden Sie diesen Prompt mit Ihrer lizenzierten KI, um einen professionellen Entwicklungsbericht zu erstellen:
+            </p>
+            <div style="background-color: #34495e; border-left: 4px solid #3498db; padding: 15px; font-family: 'Courier New', monospace; font-size: 14px; line-height: 1.6; border-radius: 4px; white-space: pre-wrap; color: #ecf0f1;" id="ki-prompt-text">Bitte erstelle einen positiv formulierten Entwicklungsbericht basierend auf den angehängten Bewertungsdaten. 
+
+WICHTIGE RICHTLINIEN:
+- Ignoriere alle Aussagen, die "Nicht bewertbar" oder "Nicht bewertet" sind
+- Formuliere ausschließlich positiv und ressourcenorientiert
+- Schreibe niemals von "auffälligem" Verhalten, sondern von "herausforderndem" Verhalten
+- Weise auf Bereiche hin, die Ergänzungen oder weitere Beobachtungen benötigen
+- Prüfe auf doppelte, sehr ähnliche oder widersprüchliche Beschreibungen und weise darauf hin
+- Strukturiere den Bericht nach Entwicklungsbereichen
+- Verwende eine professionelle, aber warme Sprache
+- Betone Stärken und Potentiale des Kindes
+- Formuliere Empfehlungen als Entwicklungschancen, nicht als Defizite
+
+FORMAT:
+1. Einleitung mit positiver Gesamteinschätzung
+2. Entwicklungsbereiche mit Stärken und Potentialen
+3. Hinweise auf Bereiche mit wenig Bewertungen
+4. Empfehlungen für weitere Förderung
+5. Positiver Ausblick
+
+Achte besonders darauf, dass der Bericht Eltern und Fachkräfte ermutigt und das Kind in seinen Entwicklungsmöglichkeiten bestärkt.</div>
+            <button onclick="copyPromptToClipboard()" class="tool-button" style="margin-top: 15px; background-color: #27ae60; border-color: #27ae60; color: white;">
+              Prompt kopieren
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Access Denied -->
+    <div id="access-denied" class="login-modal-bg">
+      <div class="login-modal-box">
+        <div class="login-modal-logo">
+          <img src="../gfx/Kidos-logo.png" alt="Kidos Logo" class="modal-logo-image" />
+        </div>
+        <h2 class="login-modal-title">Zugriff verweigert</h2>
+        <p class="login-modal-text">Sie müssen sich über die Hauptseite anmelden, um auf diese Seite zugreifen zu können.</p>
+        <button onclick="window.location.href='../index.html'" class="login-submit-btn">Zur Anmeldung</button>
+      </div>
+    </div>
+
+    <!-- Footer Container -->
+    <div id="footer-container"></div>
+  </div>
+
+  <!-- Export Confirmation Modal -->
+  <div id="export-modal" class="login-modal-bg" style="display: none;">
+    <div class="login-modal-box">
+      <div class="login-modal-logo">
+        <img src="../gfx/Kidos-logo.png" alt="Kidos Logo" class="modal-logo-image" />
+      </div>
+      <h2 class="login-modal-title">CSV-Export bestätigen</h2>
+      <p class="login-modal-text">Möchtest du alle eingegebenen Daten und Bewertungen als CSV-Datei exportieren?</p>
+      <div class="export-modal-info">
+        <p><strong>Name:</strong> <span id="export-child-name">-</span></p>
+        <p><strong>Alter:</strong> <span id="export-child-age">-</span></p>
+        <p><strong>Autor*in:</strong> <span id="export-author">-</span></p>
+        <p><strong>Erhebungsdatum:</strong> <span id="export-date">-</span></p>
+      </div>
+      <div class="export-modal-buttons">
+        <button onclick="cancelExport()" class="export-cancel-btn">Abbrechen</button>
+        <button onclick="confirmExport()" class="export-confirm-btn">Exportieren</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PDF Export Confirmation Modal -->
+  <div id="pdf-export-modal" class="login-modal-bg" style="display: none;">
+    <div class="login-modal-box">
+      <div class="login-modal-logo">
+        <img src="../gfx/Kidos-logo.png" alt="Kidos Logo" class="modal-logo-image" />
+      </div>
+      <h2 class="login-modal-title">PDF-Export bestätigen</h2>
+      <p class="login-modal-text">Möchtest du alle eingegebenen Daten und Bewertungen als PDF-Datei exportieren?</p>
+      <div class="export-modal-info">
+        <p><strong>Name:</strong> <span id="pdf-export-child-name">-</span></p>
+        <p><strong>Alter:</strong> <span id="pdf-export-child-age">-</span></p>
+        <p><strong>Autor*in:</strong> <span id="pdf-export-author">-</span></p>
+        <p><strong>Erhebungsdatum:</strong> <span id="pdf-export-date">-</span></p>
+      </div>
+      <div class="export-modal-buttons">
+        <button onclick="cancelPDFExport()" class="export-cancel-btn">Abbrechen</button>
+        <button onclick="confirmPDFExport()" class="export-confirm-btn">Exportieren</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Word Export Confirmation Modal -->
+  <div id="word-export-modal" class="login-modal-bg" style="display: none;">
+    <div class="login-modal-box">
+      <div class="login-modal-logo">
+        <img src="../gfx/Kidos-logo.png" alt="Kidos Logo" class="modal-logo-image" />
+      </div>
+      <h2 class="login-modal-title">Word-Export bestätigen</h2>
+      <p class="login-modal-text">Möchtest du alle eingegebenen Daten und Bewertungen als Word-Datei exportieren?</p>
+      <div class="export-modal-info">
+        <p><strong>Name:</strong> <span id="word-export-child-name">-</span></p>
+        <p><strong>Alter:</strong> <span id="word-export-child-age">-</span></p>
+        <p><strong>Autor*in:</strong> <span id="word-export-author">-</span></p>
+        <p><strong>Erhebungsdatum:</strong> <span id="word-export-date">-</span></p>
+      </div>
+      <div class="export-modal-buttons">
+        <button onclick="cancelWordExport()" class="export-cancel-btn">Abbrechen</button>
+        <button onclick="confirmWordExport()" class="export-confirm-btn">Exportieren</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Sichere Authentifizierung
+    function checkAuth() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get('token');
+      const storedToken = sessionStorage.getItem('kidos_login_token');
+      
+      if (token && storedToken && token === storedToken) {
+        // Gültiger Token
+        document.getElementById('access-denied').style.display = 'none';
+        document.getElementById('main-content').style.display = 'block';
+      } else {
+        // Ungültiger oder fehlender Token
+        document.getElementById('access-denied').style.display = 'flex';
+        document.getElementById('main-content').style.display = 'none';
+      }
+    }
+
+    function logout() {
+      sessionStorage.removeItem('kidos_login_token');
+      window.location.href = '../index.html';
+    }
+
+    // Bewertungstabelle laden
+    async function loadAssessmentTable() {
+      try {
+        const response = await fetch('../data/EB_STD.json');
+        const data = await response.json();
+        
+        const tableContainer = document.getElementById('assessment-table');
+        let html = '';
+        
+        data.kategorien.forEach(kategorie => {
+          // Große Überschrift für die Kategorie
+          html += `<div class="category-header">${kategorie.name}</div>`;
+          
+          kategorie.unterkategorien.forEach(unterkategorie => {
+            // Unterüberschrift
+            html += `<div class="subcategory-header">${unterkategorie.name}</div>`;
+            
+            // Aussagen mit Radio-Buttons
+            unterkategorie.aussagen.forEach((aussage, index) => {
+              const radioName = `rating_${kategorie.name}_${unterkategorie.name}_${index}`.replace(/[^a-zA-Z0-9]/g, '_');
+              
+              html += `
+                <div class="assessment-row">
+                  <div class="assessment-content">
+                    <div class="assessment-statement">${aussage}</div>
+                    <div class="assessment-ratings">
+                      <div class="rating-colors">
+                        <label class="rating-color gray" for="${radioName}_0">
+                          <input type="radio" name="${radioName}" value="0" id="${radioName}_0">
+                          <span class="rating-indicator"></span>
+                        </label>
+                        <label class="rating-color dark-red" for="${radioName}_1">
+                          <input type="radio" name="${radioName}" value="1" id="${radioName}_1">
+                          <span class="rating-indicator"></span>
+                        </label>
+                        <label class="rating-color red" for="${radioName}_2">
+                          <input type="radio" name="${radioName}" value="2" id="${radioName}_2">
+                          <span class="rating-indicator"></span>
+                        </label>
+                        <label class="rating-color yellow" for="${radioName}_3">
+                          <input type="radio" name="${radioName}" value="3" id="${radioName}_3">
+                          <span class="rating-indicator"></span>
+                        </label>
+                        <label class="rating-color light-green" for="${radioName}_4">
+                          <input type="radio" name="${radioName}" value="4" id="${radioName}_4">
+                          <span class="rating-indicator"></span>
+                        </label>
+                        <label class="rating-color green" for="${radioName}_5">
+                          <input type="radio" name="${radioName}" value="5" id="${radioName}_5">
+                          <span class="rating-indicator"></span>
+                        </label>
+                      </div>
+                      <div class="rating-legend">
+                        <span class="legend-item">Nicht<br>bewertbar</span>
+                        <span class="legend-item">Trifft nicht<br>zu</span>
+                        <span class="legend-item">Trifft weniger<br>zu</span>
+                        <span class="legend-item">Trifft<br>zu</span>
+                        <span class="legend-item">Trifft eher<br>zu</span>
+                        <span class="legend-item">Trifft absolut<br>zu</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `;
+            });
+          });
+        });
+        
+        tableContainer.innerHTML = html;
+      } catch (error) {
+        console.error('Fehler beim Laden der Bewertungstabelle:', error);
+        document.getElementById('assessment-table').innerHTML = '<p>Fehler beim Laden der Bewertungsdaten.</p>';
+      }
+    }
+
+    // Hilfsfunktion zum Laden des Logos als Base64 (global verfügbar)
+    async function loadLogoAsBase64() {
+      try {
+        const response = await fetch('../gfx/Kidos-logo.png');
+        const blob = await response.blob();
+        return new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result);
+          reader.readAsDataURL(blob);
+        });
+      } catch (error) {
+        console.warn('Logo konnte nicht geladen werden:', error);
+        return null;
+      }
+    }
+
+    // Bewertungstexte (global verfügbar)
+    const bewertungsTexte = {
+      '0': 'Nicht bewertbar',
+      '1': 'Trifft nicht zu',
+      '2': 'Trifft weniger zu',
+      '3': 'Trifft zu',
+      '4': 'Trifft eher zu',
+      '5': 'Trifft absolut zu'
+    };
+
+    // CSV-Export-Funktionalität
+    function exportToCSV() {
+      // Grunddaten sammeln und Modal füllen
+      const childName = document.getElementById('child-name').value.trim() || 'unbekannt';
+      const childAge = document.getElementById('child-age').value.trim() || 'nicht angegeben';
+      const author = document.getElementById('author').value.trim() || 'unbekannt';
+      const assessmentDate = document.getElementById('assessment-date').value || 'nicht angegeben';
+      
+      // Modal mit Daten füllen
+      document.getElementById('export-child-name').textContent = childName;
+      document.getElementById('export-child-age').textContent = childAge;
+      document.getElementById('export-author').textContent = author;
+      document.getElementById('export-date').textContent = assessmentDate;
+      
+      // Modal anzeigen
+      document.getElementById('export-modal').style.display = 'flex';
+    }
+    
+    function cancelExport() {
+      document.getElementById('export-modal').style.display = 'none';
+    }
+    
+    // PDF-Export-Funktionalität
+    function exportToPDF() {
+      // Grunddaten sammeln und Modal füllen
+      const childName = document.getElementById('child-name').value.trim() || 'unbekannt';
+      const childAge = document.getElementById('child-age').value.trim() || 'nicht angegeben';
+      const author = document.getElementById('author').value.trim() || 'unbekannt';
+      const assessmentDate = document.getElementById('assessment-date').value || 'nicht angegeben';
+      
+      // Modal mit Daten füllen
+      document.getElementById('pdf-export-child-name').textContent = childName;
+      document.getElementById('pdf-export-child-age').textContent = childAge;
+      document.getElementById('pdf-export-author').textContent = author;
+      document.getElementById('pdf-export-date').textContent = assessmentDate;
+      
+      // Modal anzeigen
+      document.getElementById('pdf-export-modal').style.display = 'flex';
+    }
+    
+    function cancelPDFExport() {
+      document.getElementById('pdf-export-modal').style.display = 'none';
+    }
+    
+    // Word-Export-Funktionalität
+    function exportToWord() {
+      // Grunddaten sammeln und Modal füllen
+      const childName = document.getElementById('child-name').value.trim() || 'unbekannt';
+      const childAge = document.getElementById('child-age').value.trim() || 'nicht angegeben';
+      const author = document.getElementById('author').value.trim() || 'unbekannt';
+      const assessmentDate = document.getElementById('assessment-date').value || 'nicht angegeben';
+      
+      // Modal mit Daten füllen
+      document.getElementById('word-export-child-name').textContent = childName;
+      document.getElementById('word-export-child-age').textContent = childAge;
+      document.getElementById('word-export-author').textContent = author;
+      document.getElementById('word-export-date').textContent = assessmentDate;
+      
+      // Modal anzeigen
+      document.getElementById('word-export-modal').style.display = 'flex';
+    }
+    
+    function cancelWordExport() {
+      document.getElementById('word-export-modal').style.display = 'none';
+    }
+    
+    // KI-Prompt kopieren
+    function copyPromptToClipboard() {
+      const promptText = document.getElementById('ki-prompt-text').textContent;
+      
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(promptText).then(() => {
+          alert('Prompt wurde in die Zwischenablage kopiert!');
+        }).catch(err => {
+          console.error('Fehler beim Kopieren:', err);
+          fallbackCopyTextToClipboard(promptText);
+        });
+      } else {
+        fallbackCopyTextToClipboard(promptText);
+      }
+    }
+    
+    // Fallback-Funktion für ältere Browser
+    function fallbackCopyTextToClipboard(text) {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.style.top = '0';
+      textArea.style.left = '0';
+      textArea.style.position = 'fixed';
+      
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      
+      try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+          alert('Prompt wurde in die Zwischenablage kopiert!');
+        } else {
+          alert('Kopieren fehlgeschlagen. Bitte markieren Sie den Text manuell und kopieren Sie ihn.');
+        }
+      } catch (err) {
+        console.error('Fallback-Kopieren fehlgeschlagen:', err);
+        alert('Kopieren fehlgeschlagen. Bitte markieren Sie den Text manuell und kopieren Sie ihn.');
+      }
+      
+      document.body.removeChild(textArea);
+    }
+    
+    async function confirmWordExport() {
+      // Modal schließen
+      document.getElementById('word-export-modal').style.display = 'none';
+      
+      try {
+        // Logo laden (wie beim PDF-Export)
+        const logoBase64 = await loadLogoAsBase64();
+        
+        // Grunddaten sammeln
+        const childName = document.getElementById('child-name').value.trim() || 'unbekannt';
+        const childAge = document.getElementById('child-age').value.trim() || 'nicht angegeben';
+        const author = document.getElementById('author').value.trim() || 'unbekannt';
+        const assessmentDate = document.getElementById('assessment-date').value || 'nicht angegeben';
+        
+        // Aktueller Zeitstempel für Dateiname
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hour = String(now.getHours()).padStart(2, '0');
+        const minute = String(now.getMinutes()).padStart(2, '0');
+        const second = String(now.getSeconds()).padStart(2, '0');
+        
+        const timestamp = `${year}${month}${day}${hour}${minute}${second}`;
+        const filename = `${timestamp} - ${childName}.doc`;
+        
+        // Hilfsfunktion für RTF-Kodierung von Umlauten und Sonderzeichen
+        function encodeRTF(text) {
+          return text
+            .replace(/\\/g, '\\\\')
+            .replace(/\{/g, '\\{')
+            .replace(/\}/g, '\\}')
+            .replace(/ä/g, "\\'e4")
+            .replace(/ö/g, "\\'f6")
+            .replace(/ü/g, "\\'fc")
+            .replace(/Ä/g, "\\'c4")
+            .replace(/Ö/g, "\\'d6")
+            .replace(/Ü/g, "\\'dc")
+            .replace(/ß/g, "\\'df")
+            .replace(/\n/g, '\\par ')
+            .replace(/\r/g, '');
+        }
+        
+        // RTF-Inhalt erstellen mit einfacher Formatierung (ohne Tabellen)
+        let rtfContent = `{\\rtf1\\ansi\\ansicpg1252\\deff0\\deflang1031 {\\fonttbl {\\f0\\fswiss\\fcharset0 Arial;}}
+{\\colortbl ;\\red0\\green102\\blue204;}
+\\paperw11906\\paperh16838\\margl1134\\margr1134\\margt1134\\margb1134
+\\f0\\fs20
+
+{\\header \\pard\\ql\\fs16 Kidos Tools - Entwicklungsbericht\\par}
+
+{\\footer \\pard\\qr\\fs18 Seite \\chpgn\\par
+\\pard\\qc\\fs16\\i \\u169? 2025 Benjamin Geisler \\u8211? Kidos Tools (MIT License)\\i0\\par}
+
+\\pard\\qc\\b\\fs28 ENTWICKLUNGSBERICHT\\b0\\fs20\\par
+\\par
+
+\\pard\\qc\\b\\fs28 ${encodeRTF(childName)}\\b0\\fs20\\par
+\\par
+
+\\pard\\qc\\fs16 Alter: ${encodeRTF(childAge)} | Autor*in: ${encodeRTF(author)} | Datum: ${encodeRTF(assessmentDate)}\\par
+\\par\\par
+
+`;
+
+        // Bewertungen in einfacher Form hinzufügen
+        const categoryHeaders = document.querySelectorAll('.category-header');
+        let currentPageLines = 0; // Zählt die Zeilen auf der aktuellen Seite
+        const maxLinesPerPage = 45; // Geschätzte maximale Zeilen pro Seite in RTF
+        let firstCategory = true;
+        
+        categoryHeaders.forEach((categoryHeader, categoryIndex) => {
+          const kategorieName = categoryHeader.textContent.trim();
+          
+          // Intelligenter Seitenumbruch: nur wenn weniger als 50% der Seite leer sind
+          if (!firstCategory) {
+            const pageUsagePercentage = currentPageLines / maxLinesPerPage;
+            
+            // Seitenumbruch nur wenn mehr als 50% der Seite genutzt sind
+            if (pageUsagePercentage > 0.5) {
+              rtfContent += '\\page ';
+              currentPageLines = 0; // Reset für neue Seite
+            }
+          }
+          firstCategory = false;
+          
+          // Kategorie-Überschrift
+          rtfContent += `\\pard\\qc\\b\\fs24 ${encodeRTF(kategorieName.toUpperCase())}\\b0\\fs20\\par\\par`;
+          currentPageLines += 3; // Kategorie-Überschrift + Abstand
+          
+          // Alle Unterkategorien dieser Kategorie durchgehen
+          let currentElement = categoryHeader.nextElementSibling;
+          
+          while (currentElement && !currentElement.classList.contains('category-header')) {
+            if (currentElement.classList.contains('subcategory-header')) {
+              const unterkategorieName = currentElement.textContent.trim();
+              
+              // Unterkategorie-Überschrift
+              rtfContent += `\\pard\\qc\\b\\fs22 ${encodeRTF(unterkategorieName)}\\b0\\fs22\\par\\par`;
+              currentPageLines += 3; // Unterkategorie-Überschrift + Abstand
+              
+              // Alle Aussagen dieser Unterkategorie durchgehen
+              let assessmentElement = currentElement.nextElementSibling;
+              
+              while (assessmentElement && 
+                     !assessmentElement.classList.contains('subcategory-header') && 
+                     !assessmentElement.classList.contains('category-header')) {
+                
+                if (assessmentElement.classList.contains('assessment-row')) {
+                  const statement = assessmentElement.querySelector('.assessment-statement').textContent.trim();
+                  const checkedRadio = assessmentElement.querySelector('input[type="radio"]:checked');
+                  const selectedRating = checkedRadio ? checkedRadio.value : null;
+                  
+                  // Aussage und Bewertung in einfacher Form mit Schriftgröße 11
+                  rtfContent += `\\pard\\ql\\fs22 ${encodeRTF(statement)}\\par`;
+                  currentPageLines += Math.ceil(statement.length / 80); // Schätze Zeilen basierend auf Textlänge
+                  
+                  if (selectedRating !== null) {
+                    const ratingText = bewertungsTexte[selectedRating];
+                    rtfContent += `\\pard\\ql\\b\\cf1\\fs22 ${encodeRTF(ratingText)}\\cf0\\b0\\par\\par`;
+                  } else {
+                    rtfContent += `\\pard\\ql\\fs22 Nicht bewertet\\par\\par`;
+                  }
+                  currentPageLines += 3; // Bewertung + Abstand
+                }
+                
+                assessmentElement = assessmentElement.nextElementSibling;
+              }
+              
+              rtfContent += '\\par'; // Abstand nach Unterkategorie
+              currentPageLines += 1;
+            }
+            
+            currentElement = currentElement.nextElementSibling;
+          }
+        });
+        
+        // Schlussbemerkung und Footer
+        const currentDate = new Date();
+        const formattedDate = `${String(currentDate.getDate()).padStart(2, '0')}.${String(currentDate.getMonth() + 1).padStart(2, '0')}.${currentDate.getFullYear()}`;
+        const authorName = author || 'unbekannt';
+        
+        rtfContent += `\\par\\par\\pard\\qc\\fs16\\par\\par
+\\pard\\qr\\i\\fs14 ${encodeRTF(`Diese Datei wurde am ${formattedDate} von ${authorName} mit Kidos Tools erstellt.`)}\\i0\\par`;
+        rtfContent += '}';
+        
+        // RTF-Datei erstellen und herunterladen
+        const encoder = new TextEncoder();
+        const rtfBytes = encoder.encode(rtfContent);
+        
+        const blob = new Blob([rtfBytes], { type: 'application/rtf' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', filename);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        
+        console.log('Word-Datei wurde erstellt:', filename);
+        alert('Professionelle Word-Datei wurde erfolgreich erstellt!');
+        
+      } catch (error) {
+        console.error('Detaillierter Fehler beim Word-Export:', error);
+        alert(`Fehler beim Word-Export: ${error.message}`);
+      }
+    }
+    
+    async function confirmPDFExport() {
+      // Modal schließen
+      document.getElementById('pdf-export-modal').style.display = 'none';
+      
+      // Logo laden
+      const logoBase64 = await loadLogoAsBase64();
+      
+      // Grunddaten sammeln
+      const childName = document.getElementById('child-name').value.trim() || 'unbekannt';
+      const childAge = document.getElementById('child-age').value.trim() || 'nicht angegeben';
+      const author = document.getElementById('author').value.trim() || 'unbekannt';
+      const assessmentDate = document.getElementById('assessment-date').value || 'nicht angegeben';
+      
+      // Aktueller Zeitstempel für Dateiname
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      const hour = String(now.getHours()).padStart(2, '0');
+      const minute = String(now.getMinutes()).padStart(2, '0');
+      const second = String(now.getSeconds()).padStart(2, '0');
+      
+      const timestamp = `${year}${month}${day}${hour}${minute}${second}`;
+      const filename = `${timestamp} - ${childName}.pdf`;
+      
+      // PDF erstellen
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      
+      // Konfiguration für tabellarische Darstellung
+      const margin = 21.25; // 0,75cm Seitenabstand (0,75cm = 21,25 Punkte)
+      const pageWidth = doc.internal.pageSize.width;
+      const pageHeight = doc.internal.pageSize.height;
+      let currentY = margin + 15; // Noch kleinerer Abstand nach Kopfzeile (war 20)
+      let pageNumber = 1;
+      
+      // Spaltenbreiten für Tabelle - angepasst an kleinere verfügbare Breite
+      const availableWidth = pageWidth - (2 * margin); // Verfügbare Breite nach Abzug der Seitenränder
+      const colWidths = {
+        statement: availableWidth - 72, // Restliche Breite für Aussagen (72 = 6 × 12 für Rating-Spalten)
+        rating1: 12,
+        rating2: 12,
+        rating3: 12,
+        rating4: 12,
+        rating5: 12,
+        rating6: 12
+      };
+      
+      const totalTableWidth = Object.values(colWidths).reduce((sum, width) => sum + width, 0);
+      const tableStartX = margin; // Tabelle beginnt am linken Rand
+      
+      // Hilfsfunktion für Kopfzeile
+      function addHeader(logoBase64 = null) {
+        doc.setFontSize(10);
+        doc.setFont(undefined, 'normal');
+        
+        // Logo hinzufügen wenn verfügbar
+        if (logoBase64) {
+          try {
+            // Logo-Position: links, klein (8x8 Punkte)
+            doc.addImage(logoBase64, 'PNG', margin, 10, 8, 8);
+            // Text neben dem Logo
+            doc.text('Kidos Tools - Entwicklungsbericht', margin + 12, 15);
+          } catch (error) {
+            // Fallback ohne Logo
+            doc.text('Kidos Tools - Entwicklungsbericht', margin, 15);
+          }
+        } else {
+          // Fallback ohne Logo
+          doc.text('Kidos Tools - Entwicklungsbericht', margin, 15);
+        }
+        
+        // Linie unter Kopfzeile
+        doc.setLineWidth(0.5);
+        doc.line(margin, 20, pageWidth - margin, 20);
+      }
+      
+      // Hilfsfunktion für Fußzeile
+      function addFooter() {
+        const footerY = pageHeight - 20; // Mehr Platz für zweizeilige Fußzeile
+        
+        // Linie über Fußzeile
+        doc.setLineWidth(0.5);
+        doc.line(margin, footerY - 5, pageWidth - margin, footerY - 5);
+        
+        doc.setFontSize(8);
+        doc.setFont(undefined, 'normal');
+        
+        // Erste Zeile: Links Datum und Autor, Rechts Seitenzahl
+        const currentDate = new Date();
+        const formattedDate = `${String(currentDate.getDate()).padStart(2, '0')}.${String(currentDate.getMonth() + 1).padStart(2, '0')}.${currentDate.getFullYear()}`;
+        const authorName = author || 'unbekannt';
+        doc.text(`Erstellt am ${formattedDate} von ${authorName}`, margin, footerY);
+        
+        // Rechts: Seitenzahl in Schriftgröße 9
+        doc.setFontSize(9);
+        doc.text(`Seite ${pageNumber}`, pageWidth - margin, footerY, { align: 'right' });
+        
+        // Zweite Zeile: Copyright zentriert in Schriftgröße 8
+        doc.setFontSize(8);
+        doc.setFont(undefined, 'italic');
+        doc.text('\u00A9 2025 Benjamin Geisler \u2013 Kidos Tools (jsPDF: MIT License)', pageWidth / 2, footerY + 8, { align: 'center' });
+      }
+      
+      // Hilfsfunktion für neue Seite
+      function checkPageBreak(additionalHeight = 10) {
+        if (currentY + additionalHeight > pageHeight - 35) { // 35 für zweizeilige Fußzeile reservieren
+          addFooter();
+          doc.addPage();
+          pageNumber++;
+          addHeader(logoBase64);
+          currentY = margin + 15; // Reduzierter Abstand nach Kopfzeile
+          return true;
+        }
+        return false;
+      }
+      
+      // Hilfsfunktion für Tabellen-Header
+      function addTableHeader() {
+        checkPageBreak(20);
+        
+        doc.setFontSize(7);
+        doc.setFont(undefined, 'bold');
+        
+        // Rahmen für Header
+        doc.setLineWidth(0.3);
+        doc.rect(tableStartX, currentY, totalTableWidth, 15);
+        
+        // Spaltentrennlinien
+        let currentX = tableStartX;
+        doc.text('Aussage', currentX + 2, currentY + 10);
+        currentX += colWidths.statement;
+        
+        doc.line(currentX, currentY, currentX, currentY + 15);
+        doc.text('0', currentX + 4, currentY + 10);
+        currentX += colWidths.rating1;
+        
+        doc.line(currentX, currentY, currentX, currentY + 15);
+        doc.text('1', currentX + 4, currentY + 10);
+        currentX += colWidths.rating2;
+        
+        doc.line(currentX, currentY, currentX, currentY + 15);
+        doc.text('2', currentX + 4, currentY + 10);
+        currentX += colWidths.rating3;
+        
+        doc.line(currentX, currentY, currentX, currentY + 15);
+        doc.text('3', currentX + 4, currentY + 10);
+        currentX += colWidths.rating4;
+        
+        doc.line(currentX, currentY, currentX, currentY + 15);
+        doc.text('4', currentX + 4, currentY + 10);
+        currentX += colWidths.rating5;
+        
+        doc.line(currentX, currentY, currentX, currentY + 15);
+        doc.text('5', currentX + 4, currentY + 10);
+        
+        currentY += 18;
+        
+        // Legende unter Header
+        doc.setFontSize(6);
+        doc.setFont(undefined, 'normal');
+        doc.text('0=Nicht bewertbar | 1=Trifft nicht zu | 2=Trifft weniger zu | 3=Trifft zu | 4=Trifft eher zu | 5=Trifft absolut zu', 
+                pageWidth / 2, currentY, { align: 'center' });
+        currentY += 8;
+      }
+      
+      // Hilfsfunktion für Tabellenzeile
+      function addTableRow(statement, selectedRating) {
+        checkPageBreak(12);
+        
+        const rowHeight = 10;
+        
+        // Rahmen für Zeile
+        doc.setLineWidth(0.2);
+        doc.rect(tableStartX, currentY, totalTableWidth, rowHeight);
+        
+        // Aussage (mit Textumbruch)
+        doc.setFontSize(7);
+        doc.setFont(undefined, 'normal');
+        const lines = doc.splitTextToSize(statement, colWidths.statement - 4);
+        const textY = currentY + 6;
+        
+        lines.forEach((line, index) => {
+          if (index < 1) { // Nur erste Zeile anzeigen, um Platzmangel zu vermeiden
+            doc.text(line, tableStartX + 2, textY);
+          }
+        });
+        
+        // Spaltentrennlinien und Markierungen
+        let currentX = tableStartX + colWidths.statement;
+        
+        // Rating-Spalten
+        for (let i = 0; i <= 5; i++) {
+          doc.line(currentX, currentY, currentX, currentY + rowHeight);
+          
+          // Markierung wenn ausgewählt
+          if (selectedRating === i.toString()) {
+            doc.setFillColor(0, 102, 204); // Kidos-Blau
+            doc.circle(currentX + 6, currentY + 5, 2, 'F');
+          }
+          
+          currentX += colWidths[`rating${i + 1}`];
+        }
+        
+        currentY += rowHeight;
+      }
+      
+      // Erste Seite: Kopfzeile hinzufügen
+      addHeader(logoBase64);
+      
+      // Titel
+      doc.setFontSize(20);
+      doc.setFont(undefined, 'bold');
+      doc.text('Entwicklungsbericht', pageWidth / 2, currentY, { align: 'center' });
+      currentY += 10; // Reduzierter Abstand für Kindername
+      
+      // Kindername unter dem Titel in Schriftgröße 14
+      doc.setFontSize(14);
+      doc.setFont(undefined, 'bold');
+      doc.text(childName, pageWidth / 2, currentY, { align: 'center' });
+      currentY += 15; // Abstand zu den Grunddaten
+      
+      // Grunddaten in kompakter Form (ohne Kindername, da er jetzt nach dem Titel steht)
+      doc.setFontSize(10);
+      doc.setFont(undefined, 'normal');
+      doc.text(`Alter: ${childAge} | Autor*in: ${author} | Datum: ${assessmentDate}`, 
+               pageWidth / 2, currentY, { align: 'center' });
+      currentY += 10; // Reduzierter Abstand
+      
+      // Bewertungen in Tabellenform
+      const categoryHeaders = document.querySelectorAll('.category-header');
+      let firstCategory = true;
+      
+      categoryHeaders.forEach(categoryHeader => {
+        const kategorieName = categoryHeader.textContent.trim();
+        
+        // Intelligenter Seitenumbruch: nur wenn weniger als 50% der Seite leer sind
+        if (!firstCategory) {
+          const usedPageHeight = currentY - (margin + 15); // Bereits genutzte Höhe (angepasst auf neuen Kopfzeilenabstand)
+          const availablePageHeight = pageHeight - 35 - (margin + 15); // Verfügbare Höhe (ohne Kopf-/Fußzeile, angepasst)
+          const pageUsagePercentage = usedPageHeight / availablePageHeight;
+          
+          // Seitenumbruch nur wenn mehr als 50% der Seite genutzt sind
+          if (pageUsagePercentage > 0.5) {
+            addFooter();
+            doc.addPage();
+            pageNumber++;
+            addHeader(logoBase64);
+            currentY = margin + 15; // Reduzierter Abstand nach Kopfzeile
+          }
+        }
+        firstCategory = false;
+        
+        // Prüfe Seitenumbruch für Kategorie-Header (falls noch zusätzlicher Platz benötigt wird)
+        checkPageBreak(30);
+        
+        // Kategorie-Überschrift
+        doc.setFontSize(14);
+        doc.setFont(undefined, 'bold');
+        doc.text(kategorieName.toUpperCase(), pageWidth / 2, currentY, { align: 'center' }); // Wieder zentriert
+        currentY += 8; // Reduzierter Abstand (war 12)
+        
+        // Alle Unterkategorien dieser Kategorie durchgehen
+        let currentElement = categoryHeader.nextElementSibling;
+        
+        while (currentElement && !currentElement.classList.contains('category-header')) {
+          if (currentElement.classList.contains('subcategory-header')) {
+            const unterkategorieName = currentElement.textContent.trim();
+            
+            // Prüfe Seitenumbruch für Unterkategorie
+            checkPageBreak(35);
+            
+            // Unterkategorie-Überschrift
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'bold');
+            doc.text(unterkategorieName, pageWidth / 2, currentY, { align: 'center' }); // Wieder zentriert
+            currentY += 6; // Reduzierter Abstand (war 8)
+            
+            // Tabellen-Header nur beim ersten Mal oder nach Seitenumbruch
+            addTableHeader();
+            
+            // Alle Aussagen dieser Unterkategorie durchgehen
+            let assessmentElement = currentElement.nextElementSibling;
+            
+            while (assessmentElement && 
+                   !assessmentElement.classList.contains('subcategory-header') && 
+                   !assessmentElement.classList.contains('category-header')) {
+              
+              if (assessmentElement.classList.contains('assessment-row')) {
+                const statement = assessmentElement.querySelector('.assessment-statement').textContent.trim();
+                const checkedRadio = assessmentElement.querySelector('input[type="radio"]:checked');
+                const selectedRating = checkedRadio ? checkedRadio.value : null;
+                
+                // Tabellenzeile hinzufügen
+                addTableRow(statement, selectedRating);
+              }
+              
+              assessmentElement = assessmentElement.nextElementSibling;
+            }
+            
+            currentY += 6; // Reduzierter Abstand nach Unterkategorie (war 8)
+          }
+          
+          currentElement = currentElement.nextElementSibling;
+        }
+        
+        currentY += 8; // Reduzierter Abstand nach Kategorie (war 10)
+      });
+      
+      // Letzte Seite: Fußzeile hinzufügen
+      addFooter();
+      
+      // PDF speichern
+      doc.save(filename);
+      console.log('PDF-Datei wurde erstellt:', filename);
+    }
+    
+    function confirmExport() {
+      // Modal schließen
+      document.getElementById('export-modal').style.display = 'none';
+      
+      // Grunddaten sammeln
+      const childName = document.getElementById('child-name').value.trim() || 'unbekannt';
+      const childAge = document.getElementById('child-age').value.trim() || '';
+      const author = document.getElementById('author').value.trim() || '';
+      const assessmentDate = document.getElementById('assessment-date').value || '';
+      
+      // Aktueller Zeitstempel für Dateiname
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      const hour = String(now.getHours()).padStart(2, '0');
+      const minute = String(now.getMinutes()).padStart(2, '0');
+      const second = String(now.getSeconds()).padStart(2, '0');
+      
+      const timestamp = `${year}${month}${day}${hour}${minute}${second}`;
+      const filename = `${timestamp} - ${childName}.csv`;
+      
+      // CSV-Inhalt erstellen mit UTF-8 BOM für korrekte Umlaut-Darstellung
+      let csvContent = '\uFEFF'; // UTF-8 BOM
+      
+      // Grunddaten hinzufügen
+      csvContent += 'GRUNDDATEN\n';
+      csvContent += `Name des Kindes;${childName}\n`;
+      csvContent += `Alter;${childAge}\n`;
+      csvContent += `Autor*in;${author}\n`;
+      csvContent += `Erhebungsdatum;${assessmentDate}\n`;
+      csvContent += '\n';
+      
+      // Bewertungen nach Kategorien strukturiert sammeln
+      const bewertungsTexte = {
+        '0': 'Nicht bewertbar',
+        '1': 'Trifft nicht zu',
+        '2': 'Trifft weniger zu',
+        '3': 'Trifft zu',
+        '4': 'Trifft eher zu',
+        '5': 'Trifft absolut zu'
+      };
+      
+      // Alle Kategorien und Unterkategorien durchgehen
+      const categoryHeaders = document.querySelectorAll('.category-header');
+      
+      categoryHeaders.forEach(categoryHeader => {
+        const kategorieName = categoryHeader.textContent.trim();
+        csvContent += `${kategorieName.toUpperCase()}\n`;
+        
+        // Alle Unterkategorien dieser Kategorie finden
+        let currentElement = categoryHeader.nextElementSibling;
+        
+        while (currentElement && !currentElement.classList.contains('category-header')) {
+          if (currentElement.classList.contains('subcategory-header')) {
+            const unterkategorieName = currentElement.textContent.trim();
+            csvContent += `${unterkategorieName}\n`;
+            
+            // Alle Aussagen dieser Unterkategorie durchgehen
+            let assessmentElement = currentElement.nextElementSibling;
+            
+            while (assessmentElement && 
+                   !assessmentElement.classList.contains('subcategory-header') && 
+                   !assessmentElement.classList.contains('category-header')) {
+              
+              if (assessmentElement.classList.contains('assessment-row')) {
+                const statement = assessmentElement.querySelector('.assessment-statement').textContent.trim();
+                
+                // Finde die ausgewählte Bewertung für diese Aussage
+                const checkedRadio = assessmentElement.querySelector('input[type="radio"]:checked');
+                const bewertung = checkedRadio ? bewertungsTexte[checkedRadio.value] : 'Nicht bewertet';
+                
+                // Aussage und Bewertung hinzufügen
+                csvContent += `"${statement}";"${bewertung}"\n`;
+              }
+              
+              assessmentElement = assessmentElement.nextElementSibling;
+            }
+            
+            csvContent += '\n'; // Leerzeile nach jeder Unterkategorie
+          }
+          
+          currentElement = currentElement.nextElementSibling;
+        }
+        
+        csvContent += '\n'; // Leerzeile nach jeder Kategorie
+      });
+      
+      // Fußzeile hinzufügen
+      const currentDate = new Date();
+      const formattedDate = `${String(currentDate.getDate()).padStart(2, '0')}.${String(currentDate.getMonth() + 1).padStart(2, '0')}.${currentDate.getFullYear()}`;
+      const authorName = author || 'unbekannt';
+      
+      csvContent += `Diese Datei wurde am ${formattedDate} von ${authorName} mit Kidos Tools erstellt.\n`;
+      csvContent += `© 2025 Benjamin Geisler - Kidos Tools. Erstellt mit jsPDF (MIT License).\n`;
+      
+      // CSV-Datei erstellen und herunterladen mit korrekter UTF-8 Kodierung
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', filename);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        
+        console.log('CSV-Datei wurde erstellt:', filename);
+      } else {
+        console.error('CSV-Export wird von diesem Browser nicht unterstützt.');
+        alert('CSV-Export wird von diesem Browser nicht unterstützt.');
+      }
+    }
+
+    // Initialisierung
+    document.addEventListener('DOMContentLoaded', function() {
+      checkAuth();
+      loadAssessmentTable();
+      
+      // Prüfe, ob Bibliotheken geladen sind
+      console.log('jsPDF verfügbar:', typeof jsPDF !== 'undefined');
+      console.log('docx verfügbar:', typeof docx !== 'undefined');
+      
+      if (typeof docx !== 'undefined') {
+        console.log('docx-Objekt:', docx);
+        console.log('docx-Eigenschaften:', Object.keys(docx));
+      } else {
+        console.error('docx-Bibliothek wurde nicht geladen!');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -487,6 +487,13 @@
   align-items: center;
 }
 
+.export-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 .export-description {
   color: var(--text-light);
   font-size: 0.9rem;
