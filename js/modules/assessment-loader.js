@@ -19,16 +19,17 @@ class KidosAssessmentLoader {
       
       data.kategorien.forEach(kategorie => {
         // Große Überschrift für die Kategorie
-        html += `<div class="category-header">${kategorie.name}</div>`;
-        
+        const kategorieName = kategorie.kategorie || kategorie.name || '';
+        html += `<div class="assessment-kategorie">${kategorieName}</div>`;
+
         kategorie.unterkategorien.forEach(unterkategorie => {
-          // Unterüberschrift
-          html += `<div class="subcategory-header">${unterkategorie.name}</div>`;
-          
+          const unterkategorieName = unterkategorie.unterkategorie || unterkategorie.name || '';
+          html += `<div class="assessment-unterkategorie">${unterkategorieName}</div>`;
+
           // Aussagen mit Radio-Buttons
           unterkategorie.aussagen.forEach((aussage, index) => {
-            const radioName = `rating_${kategorie.name}_${unterkategorie.name}_${index}`.replace(/[^a-zA-Z0-9]/g, '_');
-            
+            const radioName = `rating_${kategorieName}_${unterkategorieName}_${index}`.replace(/[^a-zA-Z0-9]/g, '_');
+
             html += `
               <div class="assessment-row">
                 <div class="assessment-content">

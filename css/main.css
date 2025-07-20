@@ -19,6 +19,33 @@
   --accent-3: #89d185;
   --accent-4: #6aaf66;
   --active-1: #e04c0f;
+
+  /* Tool-Farbkonzepte */
+  /* Blau */
+  --tool-blue-1: #187bb7; /* Titel, Buttons */
+  --tool-blue-2: #38b0f3; /* Headlines, Hover */
+  --tool-blue-3: #eaf6fd; /* Kategorie-Hintergrund */
+  --tool-blue-4: #b3e0fc; /* Unterkategorie-Hintergrund */
+  /* Rot */
+  --tool-red-1: #c0392b;
+  --tool-red-2: #e74c3c;
+  --tool-red-3: #fdecea;
+  --tool-red-4: #fab1a0;
+  /* Grün */
+  --tool-green-1: #218c3a;
+  --tool-green-2: #6aaf66;
+  --tool-green-3: #eafaf1;
+  --tool-green-4: #b6e2c6;
+  /* Orange */
+  --tool-orange-1: #e67e22;
+  --tool-orange-2: #f39c12;
+  --tool-orange-3: #fff6e5;
+  --tool-orange-4: #ffe0b2;
+  /* Lila */
+  --tool-purple-1: #6c3483;
+  --tool-purple-2: #a569bd;
+  --tool-purple-3: #f5e6fa;
+  --tool-purple-4: #d2b4de;
 }
 
 /* Grundlegende Styles */
@@ -89,14 +116,6 @@ html, body {
   gap: 2rem;
 }
 
-.nav-links .nav-link {
-  margin-right: 0px; /* vorher evtl. größer, jetzt kleiner */
-}
-
-.nav-links .nav-link:last-child {
-  margin-right: 0;
-}
-
 .nav-link {
   color: var(--accent-1);
   text-decoration: none;
@@ -132,9 +151,26 @@ html, body {
 
 .page-title {
   font-size: 2.5rem;
-  color: var(--accent-2);
+  color: var(--tool-title);
   margin-bottom: 0.5rem;
   text-align: center;
+}
+
+/* Tool-Überschriften */
+.form-title, .assessment-section > h2, .export-section > h2 {
+  color: var(--tool-headline);
+}
+
+/* Tool-Kategorien */
+.assessment-table .kategorie-title, .tool-kategorie-title {
+  color: var(--tool-kategorie);
+  font-weight: bold;
+}
+
+/* Tool-Unterkategorien */
+.assessment-table .unterkategorie-title, .tool-unterkategorie-title {
+  color: var(--tool-unterkategorie);
+  font-weight: bold;
 }
 
 .page-description {
@@ -351,23 +387,4 @@ html, body {
 .login-modal-link:hover {
   color: var(--accent-1);
   text-decoration: underline;
-}
-
-@media (max-width: 600px) {
-  html {
-    font-size: 18px;
-  }
-  .page-title {
-    font-size: 2rem;
-  }
-  .page-description,
-  .tool-description {
-    font-size: 1.1rem;
-  }
-  .tool-title {
-    font-size: 1.2rem;
-  }
-  .tool-status {
-    font-size: 1rem;
-  }
 }

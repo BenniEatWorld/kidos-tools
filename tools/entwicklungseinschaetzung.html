@@ -6,33 +6,172 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../css/main.css" />
   <link rel="stylesheet" href="../css/tools-forms.css" />
+  <style>
+    /* Tool-Farbkonzept: Grün */
+    :root {
+      --tool-title: var(--tool-green-1);
+      --tool-headline: var(--tool-green-2);
+      --tool-kategorie: var(--tool-green-3);
+      --tool-unterkategorie: var(--tool-green-4);
+    }
+    .tool-button,
+    .export-confirm-btn,
+    .login-submit-btn {
+      background: var(--tool-title) !important;
+      border-color: var(--tool-title) !important;
+      color: #fff !important;
+    }
+    .tool-button:hover,
+    .export-confirm-btn:hover,
+    .login-submit-btn:hover {
+      background: var(--tool-headline) !important;
+      border-color: var(--tool-headline) !important;
+      color: #fff !important;
+    }
+    .form-section h2,
+    .form-section h3,
+    .assessment-section h2,
+    .assessment-section h3,
+    .export-section h2,
+    .export-section h3 {
+      color: var(--tool-headline) !important;
+    }
+    .assessment-kategorie {
+      background-color: #1d3a22 !important;
+      border-left: 5px solid var(--tool-title) !important;
+      padding: 12px 12px 10px 12px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      font-weight: bold;
+      font-size: 1.5rem;
+      text-align: center;
+      letter-spacing: 0.01em;
+    }
+    .assessment-unterkategorie {
+      background-color: #24512b !important;
+      border-left: 4px solid var(--tool-headline) !important;
+      padding: 8px 12px 7px 12px;
+      border-radius: 5px;
+      margin-bottom: 8px;
+      font-weight: bold;
+      font-size: 1.15rem;
+      text-align: left;
+    }
+    .prompt-container {
+      background-color: #1d3a22 !important;
+      border: 1.5px solid var(--tool-title) !important;
+    }
+    #ki-prompt-text {
+      background-color: #24512b !important;
+      border-left: 4px solid var(--tool-title) !important;
+    }
+  </style>
+  
+  <!-- Externe Bibliotheken -->
+  <script src="../js/lib/jspdf.min.js"></script>
+  <script src="../js/lib/docx.min.js"></script>
   <script src="../js/header-loader.js"></script>
+  
+  <!-- Kidos Tools Module -->
+  <script src="../js/modules/auth.js"></script>
+  <script src="../js/modules/export-utils.js"></script>
+  <script src="../js/modules/assessment-loader.js"></script>
+  <script src="../js/modules/csv-exporter.js"></script>
+  <script src="../js/modules/pdf-exporter.js"></script>
+  <script src="../js/modules/word-exporter.js"></script>
+  <script src="../js/modules/prompt-handler.js"></script>
+  <script src="../js/modules/tools-manager.js"></script>
 </head>
 <body>
   <div class="app-container">
     <!-- Header Container -->
     <div id="header-container"></div>
-        </nav>
-      </div>
-    </header>
 
     <!-- Main Content -->
     <main class="main-content" id="main-content" style="display: none;">
       <div class="content-wrapper">
-        <h1 class="page-title">Entwicklungseinschätzung</h1>
-        <p class="page-description">
-          Spezialisierte Einschätzung für soziales, emotionales Verhalten 
-          und ADHS/ADS/ASS-Screening.
-        </p>
+        <h1 class="page-title"></h1>
+        <p class="page-description" style="text-align: justify;"></p>
         
-        <!-- Tool Content -->
-        <div class="tool-content">
-        <iframe src="../../kidos2025/ein.html" 
-                width="100%" 
-                height="800" 
-                frameborder="0"
-                title="Entwicklungseinschätzung">
-        </iframe>
+        <!-- Eingabefelder -->
+        <div class="form-section">
+          <h2 class="form-title">Grunddaten</h2>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="child-name" class="form-label">Name des Kindes:</label>
+              <input type="text" id="child-name" class="form-input" placeholder="Pseudonym" />
+            </div>
+            
+            <div class="form-group">
+              <label for="child-age" class="form-label">Alter:</label>
+              <input type="text" id="child-age" class="form-input" placeholder="z.B. 4 Jahre, 6 Monate" />
+            </div>
+            
+            <div class="form-group">
+              <label for="author" class="form-label">Autor*in:</label>
+              <input type="text" id="author" class="form-input" placeholder="Name der Erzieher*in" />
+            </div>
+            
+            <div class="form-group">
+              <label for="assessment-date" class="form-label">Erhebungsdatum:</label>
+              <input type="date" id="assessment-date" class="form-input" />
+            </div>
+          </div>
+        </div>
+        
+        <!-- Bewertungstabelle -->
+        <div class="assessment-section">
+          <h2 class="form-title">Entwicklungsbewertung</h2>
+          <div id="assessment-table" class="assessment-table">
+            <!-- Hier wird die Tabelle dynamisch geladen -->
+          </div>
+        </div>
+        
+        <!-- Export-Container -->
+        <div class="export-section">
+          <h2 class="form-title">Export</h2>
+          <div class="export-actions">
+            <div class="export-buttons">
+              <button onclick="exportToCSV()" class="tool-button">CSV-Export</button>
+              <button onclick="exportToPDF()" class="tool-button">PDF-Export</button>
+              <button onclick="exportToWord()" class="tool-button">Word-Export</button>
+            </div>
+            <p class="export-description">Exportiert alle eingegebenen Daten und Bewertungen als CSV-, PDF- oder Word-Datei.</p>
+          </div>
+        </div>
+
+        <!-- KI-Prompt Hinweis -->
+        <div class="form-section" style="margin-top: 30px;">
+          <h2 class="form-title">KI-Prompt für Entwicklungsbericht</h2>
+          <div class="prompt-container" style="background-color: #2c3e50; border: 1px solid #34495e; border-radius: 8px; padding: 20px; margin-top: 15px; color: #ecf0f1;">
+            <p style="margin-bottom: 15px; font-weight: bold; color: #bdc3c7;">
+              Verwenden Sie diesen Prompt mit Ihrer lizenzierten KI, um einen professionellen Entwicklungsbericht zu erstellen:
+            </p>
+            <div style="background-color: #34495e; border-left: 4px solid #3498db; padding: 15px; font-family: 'Courier New', monospace; font-size: 14px; line-height: 1.6; border-radius: 4px; white-space: pre-wrap; color: #ecf0f1;" id="ki-prompt-text">Bitte erstelle einen positiv formulierten Entwicklungsbericht basierend auf den angehängten Bewertungsdaten. 
+
+WICHTIGE RICHTLINIEN:
+- Ignoriere alle Aussagen, die "Nicht bewertbar" oder "Nicht bewertet" sind
+- Formuliere ausschließlich positiv und ressourcenorientiert
+- Schreibe niemals von "auffälligem" Verhalten, sondern von "herausforderndem" Verhalten
+- Weise auf Bereiche hin, die Ergänzungen oder weitere Beobachtungen benötigen
+- Prüfe auf doppelte, sehr ähnliche oder widersprüchliche Beschreibungen und weise darauf hin
+- Strukturiere den Bericht nach Entwicklungsbereichen
+- Verwende eine professionelle, aber warme Sprache
+- Betone Stärken und Potentiale des Kindes
+- Formuliere Empfehlungen als Entwicklungschancen, nicht als Defizite
+
+FORMAT:
+1. Einleitung mit positiver Gesamteinschätzung
+2. Entwicklungsbereiche mit Stärken und Potentialen
+3. Hinweise auf Bereiche mit wenig Bewertungen
+4. Empfehlungen für weitere Förderung
+5. Positiver Ausblick
+
+Achte besonders darauf, dass der Bericht Eltern und Fachkräfte ermutigt und das Kind in seinen Entwicklungsmöglichkeiten bestärkt.</div>
+            <button onclick="copyPromptToClipboard()" class="tool-button" style="margin-top: 15px; background-color: #27ae60; border-color: #27ae60; color: white;">
+              Prompt kopieren
+            </button>
+          </div>
         </div>
       </div>
     </main>
@@ -53,32 +192,87 @@
     <div id="footer-container"></div>
   </div>
 
+  <!-- Export Confirmation Modals -->
+  <!-- CSV Export Modal -->
+  <div id="export-modal" class="login-modal-bg" style="display: none;">
+    <div class="login-modal-box">
+      <div class="login-modal-logo">
+        <img src="../gfx/Kidos-logo.png" alt="Kidos Logo" class="modal-logo-image" />
+      </div>
+      <h2 class="login-modal-title">CSV-Export bestätigen</h2>
+      <p class="login-modal-text">Möchtest du alle eingegebenen Daten und Bewertungen als CSV-Datei exportieren?</p>
+      <div class="export-modal-info">
+        <p><strong>Name:</strong> <span id="export-child-name">-</span></p>
+        <p><strong>Alter:</strong> <span id="export-child-age">-</span></p>
+        <p><strong>Autor*in:</strong> <span id="export-author">-</span></p>
+        <p><strong>Erhebungsdatum:</strong> <span id="export-date">-</span></p>
+      </div>
+      <div class="export-modal-buttons">
+        <button onclick="cancelExport()" class="export-cancel-btn">Abbrechen</button>
+        <button onclick="confirmExport()" class="export-confirm-btn">Exportieren</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PDF Export Modal -->
+  <div id="pdf-export-modal" class="login-modal-bg" style="display: none;">
+    <div class="login-modal-box">
+      <div class="login-modal-logo">
+        <img src="../gfx/Kidos-logo.png" alt="Kidos Logo" class="modal-logo-image" />
+      </div>
+      <h2 class="login-modal-title">PDF-Export bestätigen</h2>
+      <p class="login-modal-text">Möchtest du alle eingegebenen Daten und Bewertungen als PDF-Datei exportieren?</p>
+      <div class="export-modal-info">
+        <p><strong>Name:</strong> <span id="pdf-export-child-name">-</span></p>
+        <p><strong>Alter:</strong> <span id="pdf-export-child-age">-</span></p>
+        <p><strong>Autor*in:</strong> <span id="pdf-export-author">-</span></p>
+        <p><strong>Erhebungsdatum:</strong> <span id="pdf-export-date">-</span></p>
+      </div>
+      <div class="export-modal-buttons">
+        <button onclick="cancelPDFExport()" class="export-cancel-btn">Abbrechen</button>
+        <button onclick="confirmPDFExport()" class="export-confirm-btn">Exportieren</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Word Export Modal -->
+  <div id="word-export-modal" class="login-modal-bg" style="display: none;">
+    <div class="login-modal-box">
+      <div class="login-modal-logo">
+        <img src="../gfx/Kidos-logo.png" alt="Kidos Logo" class="modal-logo-image" />
+      </div>
+      <h2 class="login-modal-title">Word-Export bestätigen</h2>
+      <p class="login-modal-text">Möchtest du alle eingegebenen Daten und Bewertungen als Word-Datei exportieren?</p>
+      <div class="export-modal-info">
+        <p><strong>Name:</strong> <span id="word-export-child-name">-</span></p>
+        <p><strong>Alter:</strong> <span id="word-export-child-age">-</span></p>
+        <p><strong>Autor*in:</strong> <span id="word-export-author">-</span></p>
+        <p><strong>Erhebungsdatum:</strong> <span id="word-export-date">-</span></p>
+      </div>
+      <div class="export-modal-buttons">
+        <button onclick="cancelWordExport()" class="export-cancel-btn">Abbrechen</button>
+        <button onclick="confirmWordExport()" class="export-confirm-btn">Exportieren</button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // Sichere Authentifizierung
-    function checkAuth() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const token = urlParams.get('token');
-      const storedToken = sessionStorage.getItem('kidos_login_token');
-      
-      if (token && storedToken && token === storedToken) {
-        // Gültiger Token
-        document.getElementById('access-denied').style.display = 'none';
-        document.getElementById('main-content').style.display = 'block';
-      } else {
-        // Ungültiger oder fehlender Token
-        document.getElementById('access-denied').style.display = 'flex';
-        document.getElementById('main-content').style.display = 'none';
+    // Tool-spezifische Konfiguration
+    const toolConfig = {
+      jsonFile: '../data/EIN_STD.json',
+      toolTitle: 'Entwicklungseinschätzung',
+      toolDescription: 'Mit der Bewertung der Entwicklungsaussagen kannst du am Ende eine Datei ausgeben: CSV, PDF oder DOCX. Diese wird in deinem Download-Ordner gespeichert. Du kannst anschließend deine K.I. (von deiner Arbeitgeber*in lizenzierten K.I.) mit der Datei füttern. Meistens einfach per drag & drop in das Chatfenster. Dann musst du nur noch einen Prompt schreiben. Ein Promptvorschlag steht unten nach den Exportmöglichkeiten.',
+      promptText: null // Verwendet Standard-Prompt aus dem HTML
+    };
+
+    // Tool initialisieren
+    document.addEventListener('DOMContentLoaded', async function() {
+      try {
+        await KidosToolsManager.create(toolConfig);
+        console.log('Kidos Entwicklungseinschätzung Tool erfolgreich initialisiert');
+      } catch (error) {
+        console.error('Fehler bei der Tool-Initialisierung:', error);
       }
-    }
-
-    function logout() {
-      sessionStorage.removeItem('kidos_login_token');
-      window.location.href = '../index.html';
-    }
-
-    // Initialisierung
-    document.addEventListener('DOMContentLoaded', function() {
-      checkAuth();
     });
   </script>
 </body>
