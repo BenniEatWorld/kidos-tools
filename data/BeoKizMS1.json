@@ -1,0 +1,124 @@
+{
+  "kategorien": [
+    {
+      "name": "BeoKiz Meilenstein 1 - Basiskompetenzen",
+      "unterkategorien": [
+        {
+          "name": "Bewegung und Körperwahrnehmung",
+          "aussagen": [
+            "Das Kind bewegt sich sicher im Raum.",
+            "Es zeigt altersentsprechende Grobmotorik.",
+            "Das Kind nutzt beide Körperseiten koordiniert.",
+            "Es hat ein positives Körpergefühl entwickelt.",
+            "Das Kind zeigt Interesse an Bewegungsaktivitäten."
+          ]
+        },
+        {
+          "name": "Sinneswahrnehmung",
+          "aussagen": [
+            "Das Kind reagiert angemessen auf visuelle Reize.",
+            "Es verarbeitet auditive Informationen altersgemäß.",
+            "Das Kind zeigt differenzierte taktile Wahrnehmung.",
+            "Es nutzt verschiedene Sinne zur Erkundung.",
+            "Das Kind kann Sinneseindrücke zuordnen und benennen."
+          ]
+        },
+        {
+          "name": "Kognitive Entwicklung",
+          "aussagen": [
+            "Das Kind zeigt Neugier und Forscherdrang.",
+            "Es kann einfache Zusammenhänge erkennen.",
+            "Das Kind experimentiert mit verschiedenen Materialien.",
+            "Es zeigt Interesse an Ursache-Wirkungs-Beziehungen.",
+            "Das Kind kann einfache Probleme lösen."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Sozial-emotionale Entwicklung",
+      "unterkategorien": [
+        {
+          "name": "Emotionale Kompetenz",
+          "aussagen": [
+            "Das Kind kann eigene Gefühle wahrnehmen.",
+            "Es drückt Emotionen angemessen aus.",
+            "Das Kind sucht bei Bedarf Trost und Hilfe.",
+            "Es zeigt Empathie für andere.",
+            "Das Kind kann mit Frustrationen umgehen."
+          ]
+        },
+        {
+          "name": "Soziale Interaktion",
+          "aussagen": [
+            "Das Kind nimmt Kontakt zu anderen auf.",
+            "Es spielt gerne mit anderen Kindern.",
+            "Das Kind kann teilen und warten.",
+            "Es hält einfache Regeln ein.",
+            "Das Kind zeigt prosoziales Verhalten."
+          ]
+        },
+        {
+          "name": "Bindung und Beziehung",
+          "aussagen": [
+            "Das Kind hat zu Bezugspersonen eine sichere Bindung.",
+            "Es kann sich von vertrauten Personen lösen.",
+            "Das Kind sucht bei Bedarf Nähe und Sicherheit.",
+            "Es zeigt Vertrauen zu pädagogischen Fachkräften.",
+            "Das Kind kann Beziehungen zu Gleichaltrigen aufbauen."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Kommunikation und Sprache",
+      "unterkategorien": [
+        {
+          "name": "Vorsprachliche Kommunikation",
+          "aussagen": [
+            "Das Kind kommuniziert über Mimik und Gestik.",
+            "Es nutzt Laute und Geräusche gezielt.",
+            "Das Kind zeigt Interesse an Kommunikation.",
+            "Es reagiert auf Ansprache und Zuwendung.",
+            "Das Kind initiiert Kommunikation selbst."
+          ]
+        },
+        {
+          "name": "Sprachliche Entwicklung",
+          "aussagen": [
+            "Das Kind äußert erste Worte oder Wortansätze.",
+            "Es versteht einfache Aufforderungen.",
+            "Das Kind zeigt Interesse an Sprache und Liedern.",
+            "Es reagiert auf seinen Namen.",
+            "Das Kind nutzt Sprache zur Bedürfnisäußerung."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Selbstständigkeit und Alltagsbewältigung",
+      "unterkategorien": [
+        {
+          "name": "Selbsthilfe",
+          "aussagen": [
+            "Das Kind beteiligt sich bei der Körperpflege.",
+            "Es zeigt Interesse am selbstständigen Essen.",
+            "Das Kind hilft beim An- und Ausziehen mit.",
+            "Es äußert Bedürfnisse wie Hunger oder Müdigkeit.",
+            "Das Kind zeigt erste Selbsthilfekompetenzen."
+          ]
+        },
+        {
+          "name": "Orientierung im Alltag",
+          "aussagen": [
+            "Das Kind kennt wiederkehrende Abläufe.",
+            "Es orientiert sich in vertrauten Räumen.",
+            "Das Kind zeigt Interesse an Alltagsaktivitäten.",
+            "Es kann zwischen vertrauten und fremden Personen unterscheiden.",
+            "Das Kind entwickelt erste Zeitvorstellungen."
+          ]
+        }
+      ]
+    }
+  ]
+}

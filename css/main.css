@@ -268,7 +268,6 @@ html, body {
 
 .tool-status {
   display: inline-block;
-  float: right;
   padding: 0.2rem 0.5rem;
   border-radius: 12px;
   font-size: 0.8rem;

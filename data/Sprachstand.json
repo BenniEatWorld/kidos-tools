@@ -1,0 +1,149 @@
+{
+  "kategorien": [
+    {
+      "name": "Sprachverständnis",
+      "unterkategorien": [
+        {
+          "name": "Wortverständnis",
+          "aussagen": [
+            "Das Kind versteht einfache Wörter und Begriffe aus dem Alltag.",
+            "Es reagiert angemessen auf einfache Aufforderungen.",
+            "Das Kind versteht seinen Namen und weitere Personennamen.",
+            "Es unterscheidet zwischen bekannten und unbekannten Wörtern.",
+            "Das Kind versteht altersgemäße Geschichten und Lieder."
+          ]
+        },
+        {
+          "name": "Satzverständnis",
+          "aussagen": [
+            "Das Kind versteht einfache Sätze und Zusammenhänge.",
+            "Es befolgt mehrteilige Anweisungen.",
+            "Das Kind versteht Fragen und kann angemessen reagieren.",
+            "Es erkennt die Bedeutung von Satzmelodie und Betonung.",
+            "Das Kind versteht komplexere sprachliche Strukturen."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Sprachproduktion",
+      "unterkategorien": [
+        {
+          "name": "Wortschatz",
+          "aussagen": [
+            "Das Kind verfügt über einen altersgemäßen aktiven Wortschatz.",
+            "Es benennt vertraute Personen, Gegenstände und Tätigkeiten.",
+            "Das Kind verwendet verschiedene Wortarten (Nomen, Verben, Adjektive).",
+            "Es erweitert seinen Wortschatz kontinuierlich.",
+            "Das Kind verwendet Oberbegriffe und macht Wortfindungen."
+          ]
+        },
+        {
+          "name": "Satzbau und Grammatik",
+          "aussagen": [
+            "Das Kind bildet einfache, korrekte Sätze.",
+            "Es verwendet verschiedene Satzarten (Aussage, Frage, Aufforderung).",
+            "Das Kind konjugiert Verben und dekliniert Nomen altersgemäß.",
+            "Es verwendet Präpositionen und Artikel korrekt.",
+            "Das Kind bildet komplexere Satzstrukturen mit Nebensätzen."
+          ]
+        },
+        {
+          "name": "Aussprache",
+          "aussagen": [
+            "Das Kind spricht deutlich und verständlich.",
+            "Die Lautbildung entspricht dem Entwicklungsstand.",
+            "Es artikuliert alle Laute der deutschen Sprache altersgemäß.",
+            "Das Kind hat eine angemessene Sprechmelodie und Betonung.",
+            "Es spricht in angemessener Lautstärke und Sprechgeschwindigkeit."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Kommunikation und Pragmatik",
+      "unterkategorien": [
+        {
+          "name": "Gesprächsverhalten",
+          "aussagen": [
+            "Das Kind nimmt aktiv an Gesprächen teil.",
+            "Es hält Blickkontakt während des Sprechens.",
+            "Das Kind wartet ab, bis andere ausgesprochen haben.",
+            "Es stellt Fragen und zeigt Interesse an Antworten.",
+            "Das Kind erzählt von eigenen Erlebnissen und Gefühlen."
+          ]
+        },
+        {
+          "name": "Nonverbale Kommunikation",
+          "aussagen": [
+            "Das Kind verwendet Gestik und Mimik unterstützend.",
+            "Es versteht nonverbale Signale anderer Personen.",
+            "Das Kind drückt Gefühle auch nonverbal aus.",
+            "Es nutzt Körpersprache zur Kommunikation.",
+            "Das Kind respektiert persönliche Distanz beim Sprechen."
+          ]
+        },
+        {
+          "name": "Kommunikative Absichten",
+          "aussagen": [
+            "Das Kind äußert Wünsche und Bedürfnisse sprachlich.",
+            "Es bittet um Hilfe, wenn es diese benötigt.",
+            "Das Kind teilt Informationen mit anderen.",
+            "Es verwendet Sprache zum Spielen und Fantasieren.",
+            "Das Kind löst Konflikte zunehmend verbal."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Mehrsprachigkeit",
+      "unterkategorien": [
+        {
+          "name": "Erstsprache(n)",
+          "aussagen": [
+            "Das Kind kommuniziert sicher in seiner Erstsprache.",
+            "Es wechselt bewusst zwischen den Sprachen.",
+            "Das Kind zeigt Interesse an verschiedenen Sprachen.",
+            "Es versteht kulturelle Unterschiede in der Kommunikation.",
+            "Das Kind ist stolz auf seine Mehrsprachigkeit."
+          ]
+        },
+        {
+          "name": "Deutsch als Zweitsprache",
+          "aussagen": [
+            "Das Kind zeigt Interesse am Deutschlernen.",
+            "Es verwendet deutsche Wörter im Spiel.",
+            "Das Kind versteht einfache deutsche Anweisungen.",
+            "Es kommuniziert auf Deutsch mit anderen Kindern.",
+            "Das Kind macht Fortschritte beim Deutscherwerb."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Literacy und Schriftspracherwerb",
+      "unterkategorien": [
+        {
+          "name": "Interesse an Schrift und Büchern",
+          "aussagen": [
+            "Das Kind zeigt Interesse an Büchern und Geschichten.",
+            "Es 'liest' Bilderbücher und erzählt dazu.",
+            "Das Kind erkennt bekannte Logos und Schriftzeichen.",
+            "Es zeigt Interesse am Schreiben und Malen.",
+            "Das Kind stellt Fragen zu Schrift und Buchstaben."
+          ]
+        },
+        {
+          "name": "Phonologische Bewusstheit",
+          "aussagen": [
+            "Das Kind erkennt Reime und reimt selbst.",
+            "Es klatscht Silben von Wörtern.",
+            "Das Kind hört ähnliche Laute in verschiedenen Wörtern.",
+            "Es spielt gerne mit Sprache und Lauten.",
+            "Das Kind zeigt erste Einsichten in Laut-Buchstaben-Verbindungen."
+          ]
+        }
+      ]
+    }
+  ]
+}

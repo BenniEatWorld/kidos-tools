@@ -1,0 +1,124 @@
+{
+  "kategorien": [
+    {
+      "name": "Schulbereitschaft",
+      "unterkategorien": [
+        {
+          "name": "Kognitive Voraussetzungen",
+          "aussagen": [
+            "Das Kind zeigt Interesse am Lernen und an neuen Aufgaben.",
+            "Es kann sich über einen angemessenen Zeitraum konzentrieren.",
+            "Das Kind löst einfache Probleme selbstständig.",
+            "Es versteht und befolgt mehrteilige Anweisungen.",
+            "Das Kind zeigt logisches Denkvermögen bei altersgerechten Aufgaben."
+          ]
+        },
+        {
+          "name": "Sozial-emotionale Reife",
+          "aussagen": [
+            "Das Kind kann mit Frustrationen angemessen umgehen.",
+            "Es zeigt Empathie für andere Kinder und Erwachsene.",
+            "Das Kind kann Regeln einhalten und akzeptieren.",
+            "Es löst Konflikte zunehmend verbal.",
+            "Das Kind zeigt Selbstvertrauen bei neuen Herausforderungen."
+          ]
+        },
+        {
+          "name": "Selbstständigkeit",
+          "aussagen": [
+            "Das Kind erledigt altersgemäße Aufgaben selbstständig.",
+            "Es organisiert seine Materialien und seinen Arbeitsplatz.",
+            "Das Kind bittet um Hilfe, wenn es diese benötigt.",
+            "Es zeigt Verantwortung für eigene Handlungen.",
+            "Das Kind kann eigene Bedürfnisse zurückstellen."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Vorläuferfähigkeiten",
+      "unterkategorien": [
+        {
+          "name": "Mathematische Grundlagen",
+          "aussagen": [
+            "Das Kind erkennt und benennt Formen und Farben sicher.",
+            "Es kann bis 10 zählen und Mengen erfassen.",
+            "Das Kind versteht einfache Raum-Lage-Beziehungen.",
+            "Es sortiert und ordnet nach verschiedenen Kriterien.",
+            "Das Kind löst einfache Rechenaufgaben im Zahlenraum bis 5."
+          ]
+        },
+        {
+          "name": "Sprachliche Grundlagen",
+          "aussagen": [
+            "Das Kind spricht deutlich und grammatisch korrekt.",
+            "Es verfügt über einen altersgemäßen Wortschatz.",
+            "Das Kind kann Geschichten verstehen und nacherzählen.",
+            "Es zeigt phonologische Bewusstheit (Reime, Silben).",
+            "Das Kind zeigt Interesse an Buchstaben und Schrift."
+          ]
+        },
+        {
+          "name": "Feinmotorik und Grafomotorik",
+          "aussagen": [
+            "Das Kind hält Stifte korrekt und führt sie sicher.",
+            "Es kann einfache Formen und Linien nachzeichnen.",
+            "Das Kind schneidet präzise mit der Schere.",
+            "Es zeigt eine ausgeprägte Händigkeit.",
+            "Das Kind kann seinen Namen schreiben oder nachspuren."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Arbeitsverhalten",
+      "unterkategorien": [
+        {
+          "name": "Aufmerksamkeit und Konzentration",
+          "aussagen": [
+            "Das Kind kann sich auf eine Aufgabe fokussieren.",
+            "Es arbeitet ausdauernd an begonnenen Tätigkeiten.",
+            "Das Kind lässt sich nicht leicht ablenken.",
+            "Es kann zwischen verschiedenen Aufgaben wechseln.",
+            "Das Kind zeigt Interesse an komplexeren Aufgaben."
+          ]
+        },
+        {
+          "name": "Motivation und Lernbereitschaft",
+          "aussagen": [
+            "Das Kind zeigt Neugier und Wissensdurst.",
+            "Es geht motiviert an neue Aufgaben heran.",
+            "Das Kind gibt bei Schwierigkeiten nicht sofort auf.",
+            "Es zeigt Stolz auf eigene Leistungen.",
+            "Das Kind stellt Fragen und sucht nach Antworten."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Übergangsbereitschaft",
+      "unterkategorien": [
+        {
+          "name": "Umgang mit Veränderungen",
+          "aussagen": [
+            "Das Kind zeigt Interesse an der Schule.",
+            "Es kann sich auf neue Situationen einstellen.",
+            "Das Kind bewältigt Übergänge zwischen Aktivitäten.",
+            "Es zeigt Flexibilität bei Planänderungen.",
+            "Das Kind äußert positive Erwartungen zur Schule."
+          ]
+        },
+        {
+          "name": "Gruppenfähigkeit",
+          "aussagen": [
+            "Das Kind arbeitet gerne in der Gruppe.",
+            "Es kann sich in größere Gruppen integrieren.",
+            "Das Kind respektiert andere Kinder und Erwachsene.",
+            "Es kann warten und sich zurücknehmen.",
+            "Das Kind zeigt Hilfsbereitschaft gegenüber anderen."
+          ]
+        }
+      ]
+    }
+  ]
+}

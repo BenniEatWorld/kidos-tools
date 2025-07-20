@@ -1,0 +1,124 @@
+{
+  "kategorien": [
+    {
+      "name": "BeoKiz Meilenstein 2 - Erweiterte Kompetenzen",
+      "unterkategorien": [
+        {
+          "name": "Kognitive Weiterentwicklung",
+          "aussagen": [
+            "Das Kind zeigt differenziertes Problemlöseverhalten.",
+            "Es kann komplexere Zusammenhänge verstehen.",
+            "Das Kind plant einfache Handlungsabläufe.",
+            "Es zeigt Interesse an symbolischen Darstellungen.",
+            "Das Kind kann Kategorien bilden und zuordnen."
+          ]
+        },
+        {
+          "name": "Erweiterte Bewegungskompetenzen",
+          "aussagen": [
+            "Das Kind bewegt sich sicher und koordiniert.",
+            "Es zeigt differenzierte feinmotorische Fähigkeiten.",
+            "Das Kind nutzt verschiedene Fortbewegungsarten.",
+            "Es kann Bewegungsabläufe planen und ausführen.",
+            "Das Kind zeigt Interesse an herausfordernden Bewegungsaufgaben."
+          ]
+        },
+        {
+          "name": "Spielentwicklung",
+          "aussagen": [
+            "Das Kind entwickelt komplexe Spielideen.",
+            "Es kann Spielregeln verstehen und befolgen.",
+            "Das Kind spielt ausdauernd und konzentriert.",
+            "Es zeigt Fantasie und Kreativität im Spiel.",
+            "Das Kind kann zwischen Realität und Spiel unterscheiden."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Soziale Kompetenzerweiterung",
+      "unterkategorien": [
+        {
+          "name": "Gruppenverhalten",
+          "aussagen": [
+            "Das Kind integriert sich gut in die Gruppe.",
+            "Es kann Kompromisse eingehen und verhandeln.",
+            "Das Kind zeigt Führungsqualitäten in Spielsituationen.",
+            "Es respektiert die Bedürfnisse anderer Kinder.",
+            "Das Kind kann Konflikte zunehmend selbstständig lösen."
+          ]
+        },
+        {
+          "name": "Emotionale Regulation",
+          "aussagen": [
+            "Das Kind kann Emotionen differenziert ausdrücken.",
+            "Es entwickelt Strategien zur Selbstberuhigung.",
+            "Das Kind zeigt angemessene emotionale Reaktionen.",
+            "Es kann eigene Bedürfnisse kommunizieren.",
+            "Das Kind zeigt Verständnis für emotionale Situationen anderer."
+          ]
+        },
+        {
+          "name": "Soziale Verantwortung",
+          "aussagen": [
+            "Das Kind übernimmt kleine Aufgaben und Verantwortungen.",
+            "Es hilft anderen Kindern spontan.",
+            "Das Kind zeigt Rücksichtnahme im Gruppengeschehen.",
+            "Es kann eigene Bedürfnisse zurückstellen.",
+            "Das Kind entwickelt ein Verständnis für Fairness."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Sprachliche Kompetenzerweiterung",
+      "unterkategorien": [
+        {
+          "name": "Erweiterte Kommunikation",
+          "aussagen": [
+            "Das Kind führt längere Gespräche.",
+            "Es stellt differenzierte Fragen.",
+            "Das Kind erzählt zusammenhängend von Erlebnissen.",
+            "Es nutzt Sprache zur Problemlösung.",
+            "Das Kind zeigt Interesse an verschiedenen Sprachformen."
+          ]
+        },
+        {
+          "name": "Narrative Fähigkeiten",
+          "aussagen": [
+            "Das Kind erfindet eigene Geschichten.",
+            "Es kann Geschichten logisch strukturieren.",
+            "Das Kind nutzt verschiedene Erzählperspektiven.",
+            "Es zeigt Verständnis für zeitliche Abfolgen.",
+            "Das Kind kann zwischen Realität und Fiktion unterscheiden."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Kulturelle und kreative Entwicklung",
+      "unterkategorien": [
+        {
+          "name": "Kreative Ausdrucksformen",
+          "aussagen": [
+            "Das Kind nutzt verschiedene Materialien kreativ.",
+            "Es entwickelt eigene künstlerische Ideen.",
+            "Das Kind zeigt Interesse an Musik und Rhythmus.",
+            "Es experimentiert mit verschiedenen Ausdrucksformen.",
+            "Das Kind kann kreative Werke anderen präsentieren."
+          ]
+        },
+        {
+          "name": "Kulturelles Verständnis",
+          "aussagen": [
+            "Das Kind zeigt Interesse an verschiedenen Kulturen.",
+            "Es respektiert Unterschiede und Vielfalt.",
+            "Das Kind partizipiert an kulturellen Aktivitäten.",
+            "Es entwickelt ein Verständnis für Traditionen.",
+            "Das Kind kann eigene kulturelle Erfahrungen einbringen."
+          ]
+        }
+      ]
+    }
+  ]
+}
