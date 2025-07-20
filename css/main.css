@@ -89,6 +89,14 @@ html, body {
   gap: 2rem;
 }
 
+.nav-links .nav-link {
+  margin-right: 0px; /* vorher evtl. größer, jetzt kleiner */
+}
+
+.nav-links .nav-link:last-child {
+  margin-right: 0;
+}
+
 .nav-link {
   color: var(--accent-1);
   text-decoration: none;
@@ -160,15 +168,20 @@ html, body {
 }
 
 .tool-icon {
-  font-size: 2rem;
-  margin-bottom: 1rem;
+  font-size: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.2rem;
   color: var(--accent-2);
+  text-align: center;
 }
 
 .tool-title {
   font-size: 1.3rem;
   color: var(--text-light-1);
   margin-bottom: 0.5rem;
+  text-align: center;
 }
 
 .tool-description {
@@ -176,14 +189,17 @@ html, body {
   font-size: 0.9rem;
   line-height: 1.4;
   margin-bottom: 1rem;
+  text-align: justify;
 }
 
 .tool-status {
   display: inline-block;
+  float: right;
   padding: 0.2rem 0.5rem;
   border-radius: 12px;
   font-size: 0.8rem;
   font-weight: 500;
+  margin-left: auto;
 }
 
 .status-ready {
@@ -335,4 +351,23 @@ html, body {
 .login-modal-link:hover {
   color: var(--accent-1);
   text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  html {
+    font-size: 18px;
+  }
+  .page-title {
+    font-size: 2rem;
+  }
+  .page-description,
+  .tool-description {
+    font-size: 1.1rem;
+  }
+  .tool-title {
+    font-size: 1.2rem;
+  }
+  .tool-status {
+    font-size: 1rem;
+  }
 }
