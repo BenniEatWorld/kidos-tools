@@ -74,6 +74,11 @@
   --tool-green-2: #6aaf66;
   --tool-green-3: #eafaf1;
   --tool-green-4: #b6e2c6;
+  /* Gelb */
+  --tool-yellow-1: #b7950b; /* Titel, Buttons */
+  --tool-yellow-2: #f7ca18; /* Headlines, Hover */
+  --tool-yellow-3: #fff9e3; /* Kategorie-Hintergrund */
+  --tool-yellow-4: #f9e79f; /* Unterkategorie-Hintergrund */
   /* Orange */
   --tool-orange-1: #e67e22;
   --tool-orange-2: #f39c12;
