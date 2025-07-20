@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>BeoKiz Meilenstein 1 - Kidos Tools</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/tools-forms.css" />
+  <style>
+    /* Tool-Farbkonzept: Rot */
+    :root {
+      --tool-title: var(--tool-red-1);
+      --tool-headline: var(--tool-red-2);
+      --tool-kategorie: var(--tool-red-3);
+      --tool-unterkategorie: var(--tool-red-4);
+    }
+    .tool-button,
+    .export-confirm-btn,
+    .login-submit-btn {
+      background: var(--tool-title) !important;
+      border-color: var(--tool-title) !important;
+      color: #fff !important;
+    }
+    .tool-button:hover,
+    .export-confirm-btn:hover,
+    .login-submit-btn:hover {
+      background: var(--tool-headline) !important;
+      border-color: var(--tool-headline) !important;
+      color: #fff !important;
+    }
+    .form-section h2,
+    .form-section h3,
+    .assessment-section h2,
+    .assessment-section h3,
+    .export-section h2,
+    .export-section h3 {
+      color: var(--tool-headline) !important;
+    }
+    .assessment-kategorie {
+      background-color: #4a2323 !important;
+      border-left: 5px solid var(--tool-title) !important;
+      padding: 12px 12px 10px 12px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      font-weight: bold;
+      font-size: 1.5rem;
+      text-align: center;
+      letter-spacing: 0.01em;
+    }
+    .assessment-unterkategorie {
+      background-color: #c0392b !important;
+      border-left: 4px solid var(--tool-headline) !important;
+      padding: 8px 12px 7px 12px;
+      border-radius: 5px;
+      margin-bottom: 8px;
+      font-weight: bold;
+      font-size: 1.15rem;
+      text-align: left;
+    }
+    .prompt-container {
+      background-color: #4a2323 !important;
+      border: 1.5px solid var(--tool-title) !important;
+    }
+    #ki-prompt-text {
+      background-color: #c0392b !important;
+      border-left: 4px solid var(--tool-title) !important;
+    }
+  </style>
+  <!-- Externe Bibliotheken -->
+  <script src="../js/lib/jspdf.min.js"></script>
+  <script src="../js/lib/docx.min.js"></script>
+  <script src="../js/header-loader.js"></script>
+  <!-- Kidos Tools Module -->
+  <script src="../js/modules/auth.js"></script>
+  <script src="../js/modules/export-utils.js"></script>
+  <script src="../js/modules/assessment-loader.js"></script>
+  <script src="../js/modules/csv-exporter.js"></script>
+  <script src="../js/modules/pdf-exporter.js"></script>
+  <script src="../js/modules/word-exporter.js"></script>
+  <script src="../js/modules/prompt-handler.js"></script>
+  <script src="../js/modules/tools-manager.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header Container -->
+    <div id="header-container"></div>
+    <!-- Main Content -->
+    <main class="main-content" id="main-content" style="display: none;">
+      <div class="content-wrapper">
+        <h1 class="page-title">BeoKiz Meilenstein 1</h1>
+        <p class="page-description" style="text-align: justify;">Das neue Beobachtungssystem für Berliner Kitas. Dokumentation und Einschätzung des ersten Entwicklungsmeilensteins.</p>
+        <!-- Eingabefelder -->
+        <div class="form-section">
+          <h2 class="form-title">Grunddaten</h2>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="child-name" class="form-label">Name des Kindes:</label>
+              <input type="text" id="child-name" class="form-input" placeholder="Pseudonym" />
+            </div>
+            <div class="form-group">
+              <label for="child-age" class="form-label">Alter:</label>
+              <input type="text" id="child-age" class="form-input" placeholder="z.B. 6 Jahre, 0 Monate" />
+            </div>
+            <div class="form-group">
+              <label for="author" class="form-label">Autor*in:</label>
+              <input type="text" id="author" class="form-input" placeholder="Name der Erzieher*in" />
+            </div>
+            <div class="form-group">
+              <label for="assessment-date" class="form-label">Erhebungsdatum:</label>
+              <input type="date" id="assessment-date" class="form-input" />
+            </div>
+          </div>
+        </div>
+        <!-- Bewertungstabelle -->
+        <div class="assessment-section">
+          <h2 class="form-title">Meilenstein 1 Bewertung</h2>
+          <div id="assessment-table" class="assessment-table">
+            <!-- Hier wird die Tabelle dynamisch geladen -->
+          </div>
+        </div>
+        <!-- Export-Container -->
+        <div class="export-section">
+          <h2 class="form-title">Export</h2>
+          <div class="export-actions">
+            <div class="export-buttons">
+              <button onclick="exportToCSV()" class="tool-button">CSV-Export</button>
+              <button onclick="exportToPDF()" class="tool-button">PDF-Export</button>
+              <button onclick="exportToWord()" class="tool-button">Word-Export</button>
+            </div>
+            <p class="export-description">Exportiert alle eingegebenen Daten und Bewertungen als CSV-, PDF- oder Word-Datei.</p>
+          </div>
+        </div>
+        <!-- KI-Prompt Hinweis -->
+        <div class="form-section" style="margin-top: 30px;">
+          <h2 class="form-title">KI-Prompt für BeoKiz Meilenstein 1</h2>
+          <div class="prompt-container" style="background-color: #922b21; border: 1px solid #c0392b; border-radius: 8px; padding: 20px; margin-top: 15px; color: #fff;">
+            <p style="margin-bottom: 15px; font-weight: bold; color: #f5b7b1;">
+              Verwenden Sie diesen Prompt mit Ihrer lizenzierten KI, um eine professionelle Meilenstein-1-Einschätzung zu erstellen:
+            </p>
+            <div style="background-color: #c0392b; border-left: 4px solid #e74c3c; padding: 15px; font-family: 'Courier New', monospace; font-size: 14px; line-height: 1.6; border-radius: 4px; white-space: pre-wrap; color: #fff;" id="ki-prompt-text">Bitte erstelle eine positiv formulierte Meilenstein-1-Einschätzung basierend auf den angehängten Bewertungsdaten. 
+
+WICHTIGE RICHTLINIEN:
+- Ignoriere alle Aussagen, die "Nicht bewertbar" oder "Nicht bewertet" sind
+- Formuliere ausschließlich positiv und ressourcenorientiert
+- Schreibe niemals von "auffälligem" Verhalten, sondern von "herausforderndem" Verhalten
+- Weise auf Bereiche hin, die Ergänzungen oder weitere Beobachtungen benötigen
+- Prüfe auf doppelte, sehr ähnliche oder widersprüchliche Beschreibungen und weise darauf hin
+- Strukturiere die Einschätzung nach Entwicklungsbereichen
+- Verwende eine professionelle, aber warme Sprache
+- Betone Stärken und Potentiale des Kindes
+- Formuliere Empfehlungen als Entwicklungschancen, nicht als Defizite
+
+FORMAT:
+1. Einleitung mit positiver Gesamteinschätzung
+2. Entwicklungsbereiche mit Stärken und Potentialen
+3. Hinweise auf Bereiche mit wenig Bewertungen
+4. Empfehlungen für weitere Förderung
+5. Positiver Ausblick
+
+Achte besonders darauf, dass die Einschätzung Eltern und Fachkräfte ermutigt und das Kind in seinen Entwicklungsmöglichkeiten bestärkt.</div>
+            <button onclick="copyPromptToClipboard()" class="tool-button" style="margin-top: 15px; background-color: #c0392b; border-color: #c0392b; color: white;">
+              Prompt kopieren
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+    <!-- Access Denied -->
+    <div id="access-denied" class="login-modal-bg">
+      <div class="login-modal-box">
+        <div class="login-modal-logo">
+          <img src="../gfx/Kidos-logo.png" alt="Kidos Logo" class="modal-logo-image" />
+        </div>
+        <h2 class="login-modal-title">Zugriff verweigert</h2>
+        <p class="login-modal-text">Sie müssen sich über die Hauptseite anmelden, um auf diese Seite zugreifen zu können.</p>
+        <button onclick="window.location.href='../index.html'" class="login-submit-btn">Zur Anmeldung</button>
+      </div>
+    </div>
+    <!-- Footer Container -->
+    <div id="footer-container"></div>
+  </div>
+  <!-- Export Confirmation Modals -->
+  <!-- CSV Export Modal -->
+  <div id="export-modal" class="login-modal-bg" style="display: none;">
+    <div class="login-modal-box">
+      <div class="login-modal-logo">
+        <img src="../gfx/Kidos-logo.png" alt="Kidos Logo" class="modal-logo-image" />
+      </div>
+      <h2 class="login-modal-title">CSV-Export bestätigen</h2>
+      <p class="login-modal-text">Möchtest du alle eingegebenen Daten und Bewertungen als CSV-Datei exportieren?</p>
+      <div class="export-modal-info">
+        <p><strong>Name:</strong> <span id="export-child-name">-</span></p>
+        <p><strong>Alter:</strong> <span id="export-child-age">-</span></p>
+        <p><strong>Autor*in:</strong> <span id="export-author">-</span></p>
+        <p><strong>Erhebungsdatum:</strong> <span id="export-date">-</span></p>
+      </div>
+      <div class="export-modal-buttons">
+        <button onclick="cancelExport()" class="export-cancel-btn">Abbrechen</button>
+        <button onclick="confirmExport()" class="export-confirm-btn">Exportieren</button>
+      </div>
+    </div>
+  </div>
+  <!-- PDF Export Modal -->
+  <div id="pdf-export-modal" class="login-modal-bg" style="display: none;">
+    <div class="login-modal-box">
+      <div class="login-modal-logo">
+        <img src="../gfx/Kidos-logo.png" alt="Kidos Logo" class="modal-logo-image" />
+      </div>
+      <h2 class="login-modal-title">PDF-Export bestätigen</h2>
+      <p class="login-modal-text">Möchtest du alle eingegebenen Daten und Bewertungen als PDF-Datei exportieren?</p>
+      <div class="export-modal-info">
+        <p><strong>Name:</strong> <span id="pdf-export-child-name">-</span></p>
+        <p><strong>Alter:</strong> <span id="pdf-export-child-age">-</span></p>
+        <p><strong>Autor*in:</strong> <span id="pdf-export-author">-</span></p>
+        <p><strong>Erhebungsdatum:</strong> <span id="pdf-export-date">-</span></p>
+      </div>
+      <div class="export-modal-buttons">
+        <button onclick="cancelPDFExport()" class="export-cancel-btn">Abbrechen</button>
+        <button onclick="confirmPDFExport()" class="export-confirm-btn">Exportieren</button>
+      </div>
+    </div>
+  </div>
+  <!-- Word Export Modal -->
+  <div id="word-export-modal" class="login-modal-bg" style="display: none;">
+    <div class="login-modal-box">
+      <div class="login-modal-logo">
+        <img src="../gfx/Kidos-logo.png" alt="Kidos Logo" class="modal-logo-image" />
+      </div>
+      <h2 class="login-modal-title">Word-Export bestätigen</h2>
+      <p class="login-modal-text">Möchtest du alle eingegebenen Daten und Bewertungen als Word-Datei exportieren?</p>
+      <div class="export-modal-info">
+        <p><strong>Name:</strong> <span id="word-export-child-name">-</span></p>
+        <p><strong>Alter:</strong> <span id="word-export-child-age">-</span></p>
+        <p><strong>Autor*in:</strong> <span id="word-export-author">-</span></p>
+        <p><strong>Erhebungsdatum:</strong> <span id="word-export-date">-</span></p>
+      </div>
+      <div class="export-modal-buttons">
+        <button onclick="cancelWordExport()" class="export-cancel-btn">Abbrechen</button>
+        <button onclick="confirmWordExport()" class="export-confirm-btn">Exportieren</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Tool-spezifische Konfiguration
+    const toolConfig = {
+      jsonFile: '../data/BeoKizMS1.json', 
+      toolTitle: 'BeoKiz Meilenstein 1',
+      toolDescription: 'Mit der Bewertung der Entwicklungsaussagen kannst du am Ende eine Datei ausgeben: CSV, PDF oder DOCX. Diese wird in deinem Download-Ordner gespeichert. Du kannst anschließend deine K.I. (von deiner Arbeitgeber*in lizenzierten K.I.) mit der Datei füttern. Meistens einfach per drag & drop in das Chatfenster. Dann musst du nur noch einen Prompt schreiben. Ein Promptvorschlag steht unten nach den Exportmöglichkeiten.',
+      promptText: null // Verwendet Standard-Prompt aus dem HTML
+    };
+    // Tool initialisieren
+    document.addEventListener('DOMContentLoaded', async function() {
+      try {
+        await KidosToolsManager.create(toolConfig);
+        console.log('Kidos Assessment Tool erfolgreich initialisiert');
+      } catch (error) {
+        console.error('Fehler bei der Tool-Initialisierung:', error);
+      }
+    });
+  </script>
+</body>
+</html>

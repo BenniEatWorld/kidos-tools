@@ -27,8 +27,9 @@
         <!-- Tools Grid -->
         <div class="tools-grid">
         
-        <!-- Tool 1: Entwicklungsbericht -->
-        <div class="tool-card" onclick="openTool('entwicklungsbericht')">
+
+        <!-- Tool 1: Entwicklungsbericht (blau) -->
+        <div class="tool-card tool-blue" onclick="openTool('entwicklungsbericht')">
           <div class="tool-icon">📋</div>
           <h3 class="tool-title">Entwicklungsbericht</h3>
           <p class="tool-description">
@@ -38,19 +39,19 @@
           <span class="tool-status status-ready">Bereit</span>
         </div>
 
-        <!-- Tool 2: Entwicklungseinschätzung -->
-        <div class="tool-card" onclick="openTool('entwicklungseinschaetzung')">
+        <!-- Tool 2: Entwicklungseinschätzung (grün) -->
+        <div class="tool-card tool-green" onclick="openTool('entwicklungseinschaetzung')">
           <div class="tool-icon">🔍</div>
           <h3 class="tool-title">Entwicklungseinschätzung</h3>
           <p class="tool-description">
             Spezialisierte Einschätzung für soziales, emotionales Verhalten 
             und ADHS/ADS/ASS-Screening.
           </p>
-          <span class="tool-status status-planned">Geplant</span>
+          <span class="tool-status status-dev">Entwicklung</span>
         </div>
 
-        <!-- Test-Karten für Scroll-Test -->
-        <div class="tool-card">
+        <!-- Tool 3: Einschulungs-Einschätzung (lila) -->
+        <div class="tool-card tool-purple" onclick="openTool('einschulungs-einschaetzung')">
           <div class="tool-icon">🏫</div>
           <h3 class="tool-title">Einschulungs-Einschätzung</h3>
           <p class="tool-description">
@@ -59,7 +60,8 @@
           <span class="tool-status status-planned">Geplant</span>
         </div>
 
-        <div class="tool-card">
+        <!-- Tool 4: BeoKiz MS 1 (rot) -->
+        <div class="tool-card tool-red" onclick="openTool('beokiz-ms1')">
           <div class="tool-icon">🐦</div>
           <h3 class="tool-title">BeoKiz MS 1</h3>
           <p class="tool-description">
@@ -70,7 +72,8 @@
           <span class="tool-status status-planned">Geplant</span>
         </div>
 
-        <div class="tool-card">
+        <!-- Tool 5: BeoKiz MS 2 (rot) -->
+        <div class="tool-card tool-red" onclick="openTool('beokiz-ms2')">
           <div class="tool-icon">🐦</div>
           <h3 class="tool-title">BeoKiz MS 2</h3>
           <p class="tool-description">
@@ -81,7 +84,8 @@
           <span class="tool-status status-planned">Geplant</span>
         </div>
 
-        <div class="tool-card">
+        <!-- Tool 6: Sprachstand (gelb) -->
+        <div class="tool-card tool-yellow" onclick="openTool('sprachstand')">
             <div class="tool-icon">💬</div>
           <h3 class="tool-title">Sprachstand</h3>
           <p class="tool-description">
@@ -167,7 +171,11 @@
       // Sichere Navigation zu Tools
       const toolUrls = {
         'entwicklungsbericht': 'tools/entwicklungsbericht.html',
-        'entwicklungseinschaetzung': 'tools/entwicklungseinschaetzung.html'
+        'entwicklungseinschaetzung': 'tools/entwicklungseinschaetzung.html',
+        'einschulungs-einschaetzung': 'tools/einschulungs-einschaetzung.html',
+        'beokiz-ms1': 'tools/beokiz-ms1.html',
+        'beokiz-ms2': 'tools/beokiz-ms2.html',
+        'sprachstand': 'tools/sprachstand.html'
       };
       
       if (toolUrls[toolId]) {

@@ -1,3 +1,26 @@
+/* Date Input: Zeige den Kalender-Pfeil in allen Browsern */
+input[type="date"].form-input {
+  position: relative;
+  background: var(--bg-dark-1);
+  color: var(--text-light);
+}
+input[type="date"].form-input::-webkit-calendar-picker-indicator {
+  filter: invert(0.8);
+  opacity: 1;
+  cursor: pointer;
+}
+input[type="date"].form-input::-ms-input-placeholder {
+  color: rgba(255,255,255,0.5);
+}
+input[type="date"].form-input::-webkit-input-placeholder {
+  color: rgba(255,255,255,0.5);
+}
+input[type="date"].form-input::-moz-placeholder {
+  color: rgba(255,255,255,0.5);
+}
+input[type="date"].form-input:-ms-input-placeholder {
+  color: rgba(255,255,255,0.5);
+}
 /* Tools-spezifische Styles für alle Kidos Tools */
 
 /* ================================================

@@ -1,3 +1,41 @@
+/* Tool-Card: Hintergrund bei Hover dunkler */
+.tool-card.tool-blue:hover {
+  background: linear-gradient(120deg, #14263a 80%, #19222c 100%);
+}
+.tool-card.tool-green:hover {
+  background: linear-gradient(120deg, #16301a 80%, #1a3a20 100%);
+}
+.tool-card.tool-purple:hover {
+  background: linear-gradient(120deg, #2a1847 80%, #4b2566 100%);
+}
+.tool-card.tool-red:hover {
+  background: linear-gradient(120deg, #2e1515 80%, #922b21 100%);
+}
+.tool-card.tool-yellow:hover {
+  background: linear-gradient(120deg, #665c1d 80%, #bfae2a 100%);
+}
+/* Tool-Card: Weißer Rahmen bei Hover */
+/* Dezente Tool-Card-Farben */
+.tool-card.tool-blue {
+  background: linear-gradient(120deg, #18304a 80%, #1e2e3e 100%);
+  border-color: #38b0f3;
+}
+.tool-card.tool-green {
+  background: linear-gradient(120deg, #1d3a22 80%, #24512b 100%);
+  border-color: #6aaf66;
+}
+.tool-card.tool-purple {
+  background: linear-gradient(120deg, #3d2466 80%, #6c3483 100%);
+  border-color: #a569bd;
+}
+.tool-card.tool-red {
+  background: linear-gradient(120deg, #4a2323 80%, #c0392b 100%);
+  border-color: #e74c3c;
+}
+.tool-card.tool-yellow {
+  background: linear-gradient(120deg, #665c1a 80%, #f9e79f 100%);
+  border-color: #f4d03f;
+}
 /* === KIDOS TOOLS CSS === */
 /* Grundlegende Styles für die Kidos Tools App */
 
@@ -197,11 +235,6 @@ html, body {
   cursor: pointer;
 }
 
-.tool-card:hover {
-  border-color: var(--accent-2);
-  box-shadow: 0 4px 20px rgba(56, 176, 243, 0.2);
-  transform: translateY(-2px);
-}
 
 .tool-icon {
   font-size: 3.5rem;
@@ -243,9 +276,11 @@ html, body {
   color: var(--bg-dark-1);
 }
 
-.status-development {
-  background: var(--active-1);
-  color: var(--text-light-1);
+.status-dev {
+  background: linear-gradient(90deg, #e0c97a 60%, #cfc7a0 100%);
+  color: #6a5a2a;
+  font-weight: 500;
+  box-shadow: none;
 }
 
 .status-planned {
