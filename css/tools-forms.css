@@ -1,3 +1,16 @@
+/* Ergänzungsfeld für Entwicklungsbericht */
+.ergaenzung-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: #23272b;
+  color: #f5f6fa;
+  min-height: 48px;
+  font-size: 1.3em;
+  resize: vertical;
+}
 /* Date Input: Zeige den Kalender-Pfeil in allen Browsern */
 input[type="date"].form-input {
   position: relative;

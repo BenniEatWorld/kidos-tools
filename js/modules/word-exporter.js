@@ -77,7 +77,14 @@ class KidosWordExporter {
             // Aussage
             rtfContent += `\\pard\\ql\\fs22 ${this.exportUtils.encodeRTF(statement.text)}\\par`;
             currentPageLines += Math.ceil(statement.text.length / 80);
-            
+
+            // Ergänzung als eigene Zeile
+            if (statement.ergaenzung && statement.ergaenzung.trim() !== '') {
+              const label = this.exportUtils.encodeRTF('Ergänzung: ');
+              rtfContent += `\\pard\\ql\\i\\fs22 ${label}${this.exportUtils.encodeRTF(statement.ergaenzung)}\\i0\\par`;
+              currentPageLines += Math.ceil((label + this.exportUtils.encodeRTF(statement.ergaenzung)).length / 80);
+            }
+
             // Bewertung
             if (statement.rating !== null) {
               rtfContent += `\\pard\\ql\\b\\cf1\\fs22 ${this.exportUtils.encodeRTF(statement.ratingText)}\\cf0\\b0\\par\\par`;

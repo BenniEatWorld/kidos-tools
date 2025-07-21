@@ -43,9 +43,10 @@ class KidosCSVExporter {
       
       category.subcategories.forEach(subcategory => {
         csvContent += `${subcategory.name}\n`;
-        
+        // Kopfzeile für die Spalten
+        csvContent += 'Aussage;Bewertung;Ergänzung\n';
         subcategory.statements.forEach(statement => {
-          csvContent += `"${statement.text}";"${statement.ratingText}"\n`;
+          csvContent += `"${statement.text}";"${statement.ratingText}";"${statement.ergaenzung || ''}"\n`;
         });
         
         csvContent += '\n'; // Leerzeile nach jeder Unterkategorie

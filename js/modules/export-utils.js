@@ -102,16 +102,16 @@ class KidosExportUtils {
   collectAssessmentData() {
     const assessmentData = [];
     const categoryHeaders = document.querySelectorAll('.category-header');
-    
+
     categoryHeaders.forEach(categoryHeader => {
       const kategorieName = categoryHeader.textContent.trim();
       const categoryData = {
         name: kategorieName,
         subcategories: []
       };
-      
+
       let currentElement = categoryHeader.nextElementSibling;
-      
+
       while (currentElement && !currentElement.classList.contains('category-header')) {
         if (currentElement.classList.contains('subcategory-header')) {
           const unterkategorieName = currentElement.textContent.trim();
@@ -119,37 +119,50 @@ class KidosExportUtils {
             name: unterkategorieName,
             statements: []
           };
-          
+
           let assessmentElement = currentElement.nextElementSibling;
-          
-          while (assessmentElement && 
-                 !assessmentElement.classList.contains('subcategory-header') && 
+
+          while (assessmentElement &&
+
+                 !assessmentElement.classList.contains('subcategory-header') &&
                  !assessmentElement.classList.contains('category-header')) {
-            
+
             if (assessmentElement.classList.contains('assessment-row')) {
-              const statement = assessmentElement.querySelector('.assessment-statement').textContent.trim();
-              const checkedRadio = assessmentElement.querySelector('input[type="radio"]:checked');
-              const selectedRating = checkedRadio ? checkedRadio.value : null;
-              
-              subcategoryData.statements.push({
-                text: statement,
-                rating: selectedRating,
-                ratingText: selectedRating !== null ? this.bewertungsTexte[selectedRating] : 'Nicht bewertet'
-              });
+              const statementDiv = assessmentElement.querySelector('.assessment-statement');
+              if (statementDiv) {
+                const statement = statementDiv.textContent.trim();
+                const checkedRadio = assessmentElement.querySelector('input[type="radio"]:checked');
+                const selectedRating = checkedRadio ? checkedRadio.value : null;
+                // Ergänzung als nächste .assessment-row mit .ergaenzung-textarea suchen
+                let ergaenzung = '';
+                let nextErgaenzung = assessmentElement.nextElementSibling;
+                if (nextErgaenzung && nextErgaenzung.classList.contains('assessment-row')) {
+                  const textarea = nextErgaenzung.querySelector('textarea.ergaenzung-textarea');
+                  if (textarea) {
+                    ergaenzung = textarea.value;
+                  }
+                }
+                subcategoryData.statements.push({
+                  text: statement,
+                  rating: selectedRating,
+                  ratingText: selectedRating !== null ? this.bewertungsTexte[selectedRating] : 'Nicht bewertet',
+                  ergaenzung: ergaenzung.trim()
+                });
+              }
             }
-            
+
             assessmentElement = assessmentElement.nextElementSibling;
           }
-          
+
           categoryData.subcategories.push(subcategoryData);
         }
-        
+
         currentElement = currentElement.nextElementSibling;
       }
-      
+
       assessmentData.push(categoryData);
     });
-    
+
     return assessmentData;
   }
 }

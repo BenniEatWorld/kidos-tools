@@ -225,6 +225,14 @@ class KidosPDFExporter {
           
           subcategory.statements.forEach(statement => {
             addTableRow(statement.text, statement.rating);
+            // Ergänzung als eigene Zeile unter der Aussage
+            if (statement.ergaenzung && statement.ergaenzung.trim() !== '') {
+              checkPageBreak(8);
+              doc.setFontSize(7);
+              doc.setFont(undefined, 'italic');
+              doc.text('Ergänzung: ' + statement.ergaenzung, tableStartX + 4, currentY + 6);
+              currentY += 8;
+            }
           });
           
           currentY += 6;
