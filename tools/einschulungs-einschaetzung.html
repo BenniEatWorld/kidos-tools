@@ -36,6 +36,40 @@
     .export-section h3 {
       color: var(--tool-headline) !important;
     }
+   /* Ursprüngliches Layout: Plus-Button absolut am unteren linken Rand */
+   .assessment-row {
+     position: relative;
+   }
+   .assessment-content {
+     position: relative;
+   }
+   .ergaenzung-plus-btn {
+     color: #888 !important;
+     background: transparent !important;
+     border: none !important;
+     box-shadow: none !important;
+     text-shadow: none !important;
+     font-size: 2.5em;
+     line-height: 1;
+     width: 46px;
+     height: 46px;
+     border-radius: 0 !important;
+     padding: 0;
+     transition: color 0.2s;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     position: absolute !important;
+     left: 0;
+     bottom: 6px;
+     z-index: 2;
+   }
+   .ergaenzung-plus-btn:hover {
+     color: #555 !important;
+     background: transparent !important;
+     border-radius: 0 !important;
+     box-shadow: none !important;
+   }
     .assessment-kategorie {
       background-color: #3d2466 !important;
       border-left: 5px solid var(--tool-title) !important;

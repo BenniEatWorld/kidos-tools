@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datei-Austausch Helper</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .step {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+            border-radius: 5px;
+        }
+        .step h3 {
+            margin: 0 0 10px 0;
+            color: #007bff;
+        }
+        .file-input {
+            margin: 20px 0;
+            padding: 15px;
+            border: 2px dashed #ccc;
+            border-radius: 5px;
+            text-align: center;
+            background: #fafafa;
+        }
+        .file-input input {
+            margin: 10px 0;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            text-align: center;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .warning { background: #fff3cd; color: #856404; }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .path-display {
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📁 Datei-Austausch Helper</h1>
+        
+        <div class="step">
+            <h3>Schritt 1: Bearbeitete Datei hochladen</h3>
+            <p>Wählen Sie die aus dem data_edit.html heruntergeladene JSON-Datei aus:</p>
+            <div class="file-input">
+                <input type="file" id="newFile" accept=".json" />
+                <p>Ziehen Sie die Datei hierher oder klicken Sie zum Auswählen</p>
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>Schritt 2: Zielordner</h3>
+            <p>Die Datei wird hier ersetzt:</p>
+            <div class="path-display" id="targetPath">
+                Warten auf Dateiauswahl...
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>Schritt 3: Austausch durchführen</h3>
+            <button onclick="replaceFile()" id="replaceBtn" disabled>📝 Datei ersetzen</button>
+            <div id="status"></div>
+        </div>
+
+        <div class="step">
+            <h3>Schritt 4: App neu laden</h3>
+            <p>Nach dem erfolgreichen Austausch:</p>
+            <button onclick="reloadApp()">🔄 App neu laden (F5)</button>
+        </div>
+    </div>
+
+    <script>
+        let selectedFile = null;
+        let targetFileName = null;
+
+        document.getElementById('newFile').addEventListener('change', function(e) {
+            selectedFile = e.target.files[0];
+            if (selectedFile) {
+                targetFileName = selectedFile.name;
+                document.getElementById('targetPath').textContent = 
+                    `${window.location.href.replace('/file_replace.html', '/data/')}${targetFileName}`;
+                document.getElementById('replaceBtn').disabled = false;
+                showStatus(`Datei "${selectedFile.name}" ausgewählt`, 'success');
+            }
+        });
+
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = `status ${type}`;
+        }
+
+        async function replaceFile() {
+            if (!selectedFile) {
+                showStatus('Keine Datei ausgewählt!', 'error');
+                return;
+            }
+
+            try {
+                // Datei lesen
+                const content = await selectedFile.text();
+                
+                // JSON validieren
+                JSON.parse(content);
+                
+                // Als neue Datei im data/ Ordner speichern
+                const blob = new Blob([content], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = targetFileName;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                showStatus(
+                    `✅ Datei wurde erneut heruntergeladen!\n\n` +
+                    `MANUELLE SCHRITTE:\n` +
+                    `1. Öffnen Sie den Downloads-Ordner\n` +
+                    `2. Kopieren Sie "${targetFileName}"\n` +
+                    `3. Navigieren Sie zu: data/\n` +
+                    `4. Überschreiben Sie die alte Datei\n` +
+                    `5. Klicken Sie "App neu laden"`, 
+                    'warning'
+                );
+
+            } catch (error) {
+                showStatus(`Fehler: ${error.message}`, 'error');
+            }
+        }
+
+        function reloadApp() {
+            // Versuche zur Hauptseite zu navigieren und neu zu laden
+            if (confirm('App neu laden? Alle ungespeicherten Änderungen gehen verloren.')) {
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Drag & Drop Support
+        const fileInput = document.querySelector('.file-input');
+        
+        fileInput.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileInput.style.background = '#e3f2fd';
+        });
+
+        fileInput.addEventListener('dragleave', () => {
+            fileInput.style.background = '#fafafa';
+        });
+
+        fileInput.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileInput.style.background = '#fafafa';
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                document.getElementById('newFile').files = files;
+                document.getElementById('newFile').dispatchEvent(new Event('change'));
+            }
+        });
+    </script>
+</body>
+</html>
